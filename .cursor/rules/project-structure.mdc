@@ -1,0 +1,96 @@
+---
+description: Project architecture, folder conventions, and best practices for React, React Router v7, and TypeScript.
+alwaysApply: true
+---
+
+# Project Structure & Conventions
+
+## Stack
+
+- **React 19** + **React Router v7** (framework mode, SPA — `ssr: false`)
+- **TypeScript 5.9** (`strict`, `verbatimModuleSyntax`)
+- **Tailwind CSS v4**
+- **Vite 8**
+
+## Folder Layout
+
+```
+app/
+  routes/          # One file per route segment
+  components/      # Shared UI components (no route logic)
+  hooks/           # Custom React hooks
+  lib/             # Pure utilities and helpers (no React)
+  types/           # Shared TypeScript types / interfaces
+  root.tsx         # Root layout + global ErrorBoundary
+  routes.ts        # Route manifest
+  app.css          # Global styles
+public/            # Static assets (favicon, images)
+```
+
+- Co-locate component-specific files (styles, tests, sub-components) next to the component.
+- Prefix server-only modules with `.server.ts` and client-only with `.client.ts`.
+- Use the `~/` path alias (maps to `app/`) for all internal imports.
+
+## React Router v7
+
+- Always use the generated typed `Route` object from `./+types/<route>` — never cast manually.
+- Export `loader` / `action` from route files; keep business logic in `lib/`.
+- Every route should export an `ErrorBoundary`; use `isRouteErrorResponse` to distinguish HTTP errors.
+- Prefer `meta` exports over `<title>` tags inside components.
+- Use `<Link>` / `<NavLink>` instead of `<a>` for in-app navigation.
+- Use `useFetcher` for background mutations; avoid redundant `useEffect` + `fetch` patterns.
+
+```tsx
+// ✅ typed loader + component
+import type { Route } from "./+types/pokemon";
+
+export async function loader({ params }: Route.LoaderArgs) {
+  return fetchPokemon(params.id);
+}
+
+export default function Pokemon({ loaderData }: Route.ComponentProps) {
+  return <div>{loaderData.name}</div>;
+}
+```
+
+## React
+
+- Functional components only — no class components.
+- Keep components small and single-purpose; extract logic into custom hooks.
+- Never call hooks conditionally or inside loops.
+- Derive values from existing state instead of mirroring them with `useEffect`.
+- Use `useCallback` / `useMemo` only when profiling shows it matters.
+
+```tsx
+// ❌ mirroring state
+const [fullName, setFullName] = useState("");
+useEffect(() => setFullName(`${first} ${last}`), [first, last]);
+
+// ✅ derived value
+const fullName = `${first} ${last}`;
+```
+
+## TypeScript
+
+- `strict: true` is enforced — no suppressions without a documented reason.
+- Use `type` for shapes and unions; use `interface` only when extending.
+- Use `verbatimModuleSyntax`: always use `import type` for type-only imports.
+- Never use `any`; prefer `unknown` with a type guard when the shape is truly unknown.
+- Validate external data at the boundary (API responses, URL params) before typing.
+
+```ts
+// ✅ type-only import
+import type { Pokemon } from "~/types/pokemon";
+
+// ✅ unknown → typed at boundary
+function parsePokemon(raw: unknown): Pokemon {
+  // validate shape here
+}
+```
+
+## General
+
+- Keep functions small and single-purpose; shallow control flow over nesting.
+- All code and comments must be in **English**.
+- Comments explain **why**, not what.
+- Fail fast: validate inputs at the top of a function; avoid deeply nested error handling.
