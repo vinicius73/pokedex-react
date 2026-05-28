@@ -102,7 +102,7 @@ export function Modal({
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="pokdex-modal-panel pokdex-modal-animate max-h-[92vh] sm:max-h-[90vh]"
+        className="pokdex-modal-panel pokdex-modal-animate max-h-[92vh] cursor-default sm:max-h-[90vh]"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="pokdex-modal-header flex items-start justify-between gap-4">
@@ -124,7 +124,7 @@ export function Modal({
             ref={closeButtonRef}
             type="button"
             onClick={onClose}
-            className="shrink-0 rounded-lg border border-border bg-surface p-2 text-ink-muted transition-colors hover:border-border-strong hover:bg-parchment hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-parchment dark:border-border-dark dark:bg-surface-dark dark:text-ink-muted-dark dark:hover:bg-parchment-deep-dark dark:hover:text-ink-dark dark:focus-visible:ring-offset-parchment-dark"
+            className="pokdex-modal-close"
             aria-label="Close dialog"
           >
             <svg

@@ -63,11 +63,7 @@ export function EvolutionChain({
                 type="button"
                 onClick={() => onSelectSpecies(step.speciesName)}
                 disabled={isCurrent}
-                className={`flex min-w-[5.5rem] flex-col items-center rounded-xl border p-2.5 transition-[border-color,background-color,transform] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-surface-raised dark:focus-visible:ring-offset-surface-raised-dark ${
-                  isCurrent
-                    ? "cursor-default border-crimson bg-crimson/8 shadow-sm dark:bg-crimson/15"
-                    : "border-border bg-surface-raised hover:-translate-y-0.5 hover:border-border-strong hover:shadow-md dark:border-border-dark dark:bg-surface-dark dark:hover:border-border"
-                }`}
+                className="pokdex-evolution-step"
                 aria-label={
                   isCurrent
                     ? `${displayName} (current)`

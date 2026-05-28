@@ -93,6 +93,14 @@ body::before {
     @apply relative flex min-h-48 flex-col overflow-hidden rounded-xl border border-border bg-surface-raised text-left shadow-[0_1px_0_rgba(255,255,255,0.8)_inset,0_1px_2px_rgba(28,25,23,0.06)] transition-[transform,box-shadow,border-color] duration-200 ease-out;
   }
 
+  .pokdex-card:not(:disabled) {
+    @apply cursor-pointer;
+  }
+
+  .pokdex-card:disabled {
+    @apply cursor-not-allowed;
+  }
+
   .pokdex-card::before {
     content: "";
     @apply pointer-events-none absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-crimson via-crimson-deep to-crimson opacity-0 transition-opacity duration-200;
@@ -151,6 +159,22 @@ body::before {
   .pokdex-modal-header::before {
     content: "";
     @apply absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-crimson via-gold-soft to-crimson-deep;
+  }
+
+  .pokdex-modal-close {
+    @apply shrink-0 cursor-pointer rounded-lg border border-border bg-surface p-2 text-ink-muted transition-colors hover:border-border-strong hover:bg-parchment hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-parchment dark:border-border-dark dark:bg-surface-dark dark:text-ink-muted-dark dark:hover:bg-parchment-deep-dark dark:hover:text-ink-dark dark:focus-visible:ring-offset-parchment-dark;
+  }
+
+  .pokdex-evolution-step {
+    @apply flex min-w-[5.5rem] flex-col items-center rounded-xl border border-border bg-surface-raised p-2.5 transition-[border-color,background-color,transform] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-surface-raised dark:border-border-dark dark:bg-surface-dark dark:focus-visible:ring-offset-surface-raised-dark;
+  }
+
+  .pokdex-evolution-step:not(:disabled) {
+    @apply cursor-pointer hover:-translate-y-0.5 hover:border-border-strong hover:shadow-md dark:hover:border-border;
+  }
+
+  .pokdex-evolution-step:disabled {
+    @apply cursor-default border-crimson bg-crimson/8 shadow-sm dark:bg-crimson/15;
   }
 
   .pokdex-specimen-plate {
@@ -242,6 +266,7 @@ body::before {
 
 .pokdex-backdrop-animate {
   animation: pokdex-backdrop-in 0.2s ease-out both;
+  cursor: pointer;
 }
 
 [data-pokemon-type="normal"] {

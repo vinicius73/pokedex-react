@@ -148,7 +148,7 @@ export function PokemonDetailsModal({ triggerRef }: PokemonDetailsModalProps) {
                     type="button"
                     onClick={() => setShowShiny((current) => !current)}
                     aria-pressed={showShiny}
-                    className={`rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-surface-raised dark:focus-visible:ring-offset-surface-raised-dark ${
+                    className={`cursor-pointer rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-surface-raised dark:focus-visible:ring-offset-surface-raised-dark ${
                       showShiny
                         ? "border-gold-soft bg-gold-soft/15 text-gold"
                         : "border-border bg-surface text-ink-muted hover:border-border-strong hover:text-ink dark:border-border-dark dark:bg-surface-dark dark:text-ink-muted-dark dark:hover:text-ink-dark"
