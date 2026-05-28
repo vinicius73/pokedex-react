@@ -6,16 +6,32 @@ import { Spinner } from "~/components/Spinner";
 
 type PokemonCardProps = {
   entry: PokedexEntry;
+  typeFilter: string | null;
+  onSelect: (name: string, triggerElement: HTMLElement) => void;
 };
 
 function formatEntryNumber(entryNumber: number): string {
   return `#${String(entryNumber).padStart(3, "0")}`;
 }
 
-export function PokemonCard({ entry }: PokemonCardProps) {
+function matchesTypeFilter(types: string[], typeFilter: string | null): boolean {
+  if (typeFilter === null) {
+    return true;
+  }
+
+  return types.some(
+    (type) => type.toLowerCase() === typeFilter.toLowerCase(),
+  );
+}
+
+export function PokemonCard({ entry, typeFilter, onSelect }: PokemonCardProps) {
   const pokemonQuery = usePokemon(entry.pokemon_species.name);
 
   if (pokemonQuery.isLoading) {
+    if (typeFilter !== null) {
+      return null;
+    }
+
     return (
       <button
         type="button"
@@ -48,9 +64,14 @@ export function PokemonCard({ entry }: PokemonCardProps) {
 
   const item = mapPokemonListItem(entry, pokemonQuery.data);
 
+  if (!matchesTypeFilter(item.types, typeFilter)) {
+    return null;
+  }
+
   return (
     <button
       type="button"
+      onClick={(event) => onSelect(entry.pokemon_species.name, event.currentTarget)}
       className="flex min-h-44 flex-col items-center rounded-xl border border-gray-200 bg-white p-4 text-left transition-shadow hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:border-gray-800 dark:bg-gray-900"
       aria-label={item.displayName}
     >

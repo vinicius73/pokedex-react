@@ -3,9 +3,15 @@ import type { PokedexEntry } from "~/lib/pokemon/utils/mergePokedexEntries";
 
 type PokemonGridProps = {
   entries: PokedexEntry[];
+  typeFilter: string | null;
+  onSelectPokemon: (name: string, triggerElement: HTMLElement) => void;
 };
 
-export function PokemonGrid({ entries }: PokemonGridProps) {
+export function PokemonGrid({
+  entries,
+  typeFilter,
+  onSelectPokemon,
+}: PokemonGridProps) {
   return (
     <section
       data-testid="pokemon-grid"
@@ -15,6 +21,8 @@ export function PokemonGrid({ entries }: PokemonGridProps) {
         <PokemonCard
           key={entry.pokemon_species.url}
           entry={entry}
+          typeFilter={typeFilter}
+          onSelect={onSelectPokemon}
         />
       ))}
     </section>
