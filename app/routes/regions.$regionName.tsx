@@ -204,7 +204,7 @@ export default function RegionPage() {
     if (regionsQuery.isLoading) {
       return (
         <div className="flex justify-center py-16">
-          <Spinner className="h-8 w-8 text-blue-600" />
+          <Spinner className="h-8 w-8 text-crimson" />
         </div>
       );
     }
@@ -218,7 +218,7 @@ export default function RegionPage() {
     if (regionQuery.isLoading) {
       return (
         <div className="flex justify-center py-16">
-          <Spinner className="h-8 w-8 text-blue-600" />
+          <Spinner className="h-8 w-8 text-crimson" />
         </div>
       );
     }
@@ -236,7 +236,7 @@ export default function RegionPage() {
     if (isLoadingPokedex) {
       return (
         <div className="flex justify-center py-16">
-          <Spinner className="h-8 w-8 text-blue-600" />
+          <Spinner className="h-8 w-8 text-crimson" />
         </div>
       );
     }
@@ -274,11 +274,16 @@ export default function RegionPage() {
 
   return (
     <>
-      <main data-testid="pokedex-page" className="mx-auto max-w-7xl px-4 py-8">
-        <header className="mb-8 space-y-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-            Pokédex
-          </h1>
+      <main data-testid="pokedex-page" className="relative z-[1] mx-auto max-w-7xl px-4 py-8 sm:py-10">
+        <header className="mb-8 space-y-6 sm:mb-10">
+          <div className="space-y-2">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-crimson">
+              Regional encyclopedia
+            </p>
+            <h1 className="pokdex-display text-4xl font-semibold tracking-tight text-ink dark:text-ink-dark sm:text-5xl">
+              Pokédex
+            </h1>
+          </div>
 
           {regionsQuery.data ? (
             <RegionTabs
@@ -295,7 +300,7 @@ export default function RegionPage() {
             />
           ) : null}
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface-raised/80 p-4 shadow-sm backdrop-blur-sm dark:border-border-dark dark:bg-surface-raised-dark/80 sm:flex-row sm:items-center">
             <div className="flex-1">
               <label htmlFor="pokemon-search" className="sr-only">
                 Search Pokémon
@@ -308,11 +313,11 @@ export default function RegionPage() {
                 placeholder="Search by name…"
                 value={nameQuery}
                 onChange={(event) => handleNameQueryChange(event.target.value)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 dark:placeholder:text-gray-500"
+                className="pokdex-field"
               />
             </div>
 
-            <div className="sm:w-48">
+            <div className="sm:w-52">
               <label htmlFor="type-filter" className="sr-only">
                 Filter by type
               </label>
@@ -321,7 +326,7 @@ export default function RegionPage() {
                 aria-label="Filter by type"
                 value={typeFilter ?? ""}
                 onChange={(event) => handleTypeFilterChange(event.target.value)}
-                className="w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+                className="pokdex-field"
               >
                 <option value="">All types</option>
                 {POKEMON_TYPES.map((type) => (

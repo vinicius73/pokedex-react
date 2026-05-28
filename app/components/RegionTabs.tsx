@@ -18,10 +18,10 @@ export function RegionTabs({ regions, activeRegion }: RegionTabsProps) {
             key={region.name}
             to={`/regions/${region.name}`}
             aria-current={isActive ? "page" : undefined}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+            className={`rounded-full border px-4 py-2 text-sm font-medium transition-[background-color,border-color,color,box-shadow] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-parchment dark:focus-visible:ring-offset-parchment-dark ${
               isActive
-                ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+                ? "border-crimson bg-crimson text-white shadow-sm"
+                : "border-border bg-surface-raised text-ink-muted hover:border-border-strong hover:text-ink dark:border-border-dark dark:bg-surface-raised-dark dark:text-ink-muted-dark dark:hover:text-ink-dark"
             }`}
           >
             {formatPokemonName(region.name)}

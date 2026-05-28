@@ -19,15 +19,18 @@ export function PokedexSelector({
   const selectId = "pokedex-selector";
 
   return (
-    <div className="flex items-center gap-2">
-      <label htmlFor={selectId} className="text-sm font-medium text-gray-700 dark:text-gray-300">
+    <div className="flex items-center gap-3">
+      <label
+        htmlFor={selectId}
+        className="text-sm font-medium text-ink-muted dark:text-ink-muted-dark"
+      >
         Pokédex
       </label>
       <select
         id={selectId}
         value={selected}
         onChange={(event) => onChange(event.target.value as string | "all")}
-        className="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-900"
+        className="pokdex-field w-auto min-w-[10rem]"
       >
         <option value="all">All</option>
         {pokedexes.map((pokedex) => (

@@ -8,10 +8,11 @@ type PokemonCardProps = {
   entry: PokedexEntry;
   typeFilter: string | null;
   onSelect: (name: string, triggerElement: HTMLElement) => void;
+  animationDelay?: number;
 };
 
 function formatEntryNumber(entryNumber: number): string {
-  return `#${String(entryNumber).padStart(3, "0")}`;
+  return String(entryNumber).padStart(3, "0");
 }
 
 function matchesTypeFilter(types: string[], typeFilter: string | null): boolean {
@@ -24,7 +25,12 @@ function matchesTypeFilter(types: string[], typeFilter: string | null): boolean 
   );
 }
 
-export function PokemonCard({ entry, typeFilter, onSelect }: PokemonCardProps) {
+export function PokemonCard({
+  entry,
+  typeFilter,
+  onSelect,
+  animationDelay = 0,
+}: PokemonCardProps) {
   const pokemonQuery = usePokemon(entry.pokemon_species.name);
 
   if (pokemonQuery.isLoading) {
@@ -36,10 +42,11 @@ export function PokemonCard({ entry, typeFilter, onSelect }: PokemonCardProps) {
       <button
         type="button"
         disabled
-        className="flex min-h-44 flex-col items-center justify-center rounded-xl border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900"
+        className="pokdex-card min-h-48 items-center justify-center p-4 opacity-70"
+        style={{ animationDelay: `${animationDelay}ms` }}
         aria-label={`Loading ${entry.pokemon_species.name}`}
       >
-        <Spinner className="h-5 w-5 text-gray-400" />
+        <Spinner className="h-5 w-5 text-ink-faint" />
       </button>
     );
   }
@@ -49,15 +56,13 @@ export function PokemonCard({ entry, typeFilter, onSelect }: PokemonCardProps) {
       <button
         type="button"
         disabled
-        className="flex min-h-44 flex-col items-center justify-center rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950/30"
+        className="pokdex-card min-h-48 items-center justify-center border-crimson/30 bg-crimson/5 p-4"
         aria-label={`Failed to load ${entry.pokemon_species.name}`}
       >
-        <span className="text-xs text-red-600 dark:text-red-400">
+        <span className="pokdex-mono text-xs font-medium text-gold">
           {formatEntryNumber(entry.entry_number)}
         </span>
-        <span className="mt-1 text-sm text-red-700 dark:text-red-300">
-          Unavailable
-        </span>
+        <span className="mt-1 text-sm text-crimson">Unavailable</span>
       </button>
     );
   }
@@ -72,31 +77,40 @@ export function PokemonCard({ entry, typeFilter, onSelect }: PokemonCardProps) {
     <button
       type="button"
       onClick={(event) => onSelect(entry.pokemon_species.name, event.currentTarget)}
-      className="flex min-h-44 flex-col items-center rounded-xl border border-gray-200 bg-white p-4 text-left transition-shadow hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:border-gray-800 dark:bg-gray-900"
+      className="pokdex-card group pokdex-animate-in p-4"
+      style={{ animationDelay: `${animationDelay}ms` }}
       aria-label={item.displayName}
     >
-      <span className="self-start text-xs font-medium text-gray-500 dark:text-gray-400">
-        {formatEntryNumber(item.entryNumber)}
-      </span>
+      <div className="flex w-full items-start justify-between gap-2">
+        <span className="pokdex-mono text-[0.6875rem] font-medium tracking-wide text-gold">
+          #{formatEntryNumber(item.entryNumber)}
+        </span>
+        <span
+          className="text-[0.625rem] font-medium uppercase tracking-wider text-ink-faint opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+          aria-hidden="true"
+        >
+          View
+        </span>
+      </div>
 
-      {item.imageUrl ? (
-        <img
-          src={item.imageUrl}
-          alt={item.displayName}
-          className="h-20 w-20 object-contain"
-          loading="lazy"
-        />
-      ) : (
-        <div className="flex h-20 w-20 items-center justify-center text-xs text-gray-400">
-          No image
-        </div>
-      )}
+      <div className="mx-auto mt-1 flex h-24 w-full max-w-[7.5rem] items-center justify-center rounded-xl bg-gradient-to-b from-parchment to-parchment-deep/70 p-2 dark:from-parchment-deep-dark dark:to-parchment-dark">
+        {item.imageUrl ? (
+          <img
+            src={item.imageUrl}
+            alt=""
+            className="h-20 w-20 object-contain drop-shadow-[0_4px_8px_rgba(28,25,23,0.12)] transition-transform duration-200 group-hover:scale-105"
+            loading="lazy"
+          />
+        ) : (
+          <span className="text-xs text-ink-faint">No image</span>
+        )}
+      </div>
 
-      <span className="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
+      <span className="pokdex-display mt-3 line-clamp-1 text-center text-base font-semibold leading-tight text-ink dark:text-ink-dark">
         {item.displayName}
       </span>
 
-      <div className="mt-2 flex flex-wrap justify-center gap-1">
+      <div className="mt-auto flex flex-wrap justify-center gap-1 pt-3">
         {item.types.map((type) => (
           <PokemonTypeBadge key={type} type={type} />
         ))}

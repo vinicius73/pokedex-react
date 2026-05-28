@@ -38,12 +38,10 @@ export function EvolutionChain({
   }
 
   return (
-    <div>
-      <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-        Evolution
-      </h3>
+    <section aria-label="Evolution">
+      <h3 className="pokdex-section-title">Evolution</h3>
 
-      <div className="flex flex-wrap items-center justify-center gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
         {steps.map((step, index) => {
           const displayName = formatPokemonName(step.speciesName);
           const spriteUrl = getSpeciesSpriteUrl(step.speciesUrl);
@@ -55,7 +53,7 @@ export function EvolutionChain({
               {index > 0 ? (
                 <span
                   aria-hidden="true"
-                  className="text-lg text-gray-400 dark:text-gray-500"
+                  className="pokdex-mono text-sm font-medium text-gold"
                 >
                   →
                 </span>
@@ -65,10 +63,10 @@ export function EvolutionChain({
                 type="button"
                 onClick={() => onSelectSpecies(step.speciesName)}
                 disabled={isCurrent}
-                className={`flex flex-col items-center rounded-lg border p-2 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 ${
+                className={`flex min-w-[5.5rem] flex-col items-center rounded-xl border p-2.5 transition-[border-color,background-color,transform] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-surface-raised dark:focus-visible:ring-offset-surface-raised-dark ${
                   isCurrent
-                    ? "cursor-default border-blue-500 bg-blue-50 dark:border-blue-400 dark:bg-blue-950/30"
-                    : "border-gray-200 bg-white hover:border-blue-300 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:border-blue-600 dark:hover:bg-gray-700/50"
+                    ? "cursor-default border-crimson bg-crimson/8 shadow-sm dark:bg-crimson/15"
+                    : "border-border bg-surface-raised hover:-translate-y-0.5 hover:border-border-strong hover:shadow-md dark:border-border-dark dark:bg-surface-dark dark:hover:border-border"
                 }`}
                 aria-label={
                   isCurrent
@@ -77,19 +75,19 @@ export function EvolutionChain({
                 }
                 aria-current={isCurrent ? "true" : undefined}
               >
-                {spriteUrl ? (
-                  <img
-                    src={spriteUrl}
-                    alt={displayName}
-                    className="h-16 w-16 object-contain"
-                  />
-                ) : (
-                  <div className="flex h-16 w-16 items-center justify-center text-xs text-gray-400">
-                    No image
-                  </div>
-                )}
+                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-gradient-to-b from-parchment to-parchment-deep/70 dark:from-parchment-deep-dark dark:to-parchment-dark">
+                  {spriteUrl ? (
+                    <img
+                      src={spriteUrl}
+                      alt=""
+                      className="h-14 w-14 object-contain"
+                    />
+                  ) : (
+                    <span className="text-xs text-ink-faint">No image</span>
+                  )}
+                </div>
 
-                <span className="mt-1 text-xs font-medium text-gray-900 dark:text-gray-100">
+                <span className="pokdex-display mt-2 line-clamp-1 text-xs font-semibold text-ink dark:text-ink-dark">
                   {displayName}
                 </span>
               </button>
@@ -97,6 +95,6 @@ export function EvolutionChain({
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }

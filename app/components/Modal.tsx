@@ -8,6 +8,7 @@ type ModalProps = {
   titleId: string;
   children: ReactNode;
   triggerRef?: RefObject<HTMLElement | null>;
+  subtitle?: string;
 };
 
 const FOCUSABLE_SELECTOR =
@@ -24,6 +25,7 @@ export function Modal({
   titleId,
   children,
   triggerRef,
+  subtitle,
 }: ModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -87,40 +89,59 @@ export function Modal({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4"
       onClick={onClose}
     >
-      <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
+      <div
+        className="pokdex-backdrop-animate absolute inset-0 bg-ink/55 backdrop-blur-[3px] dark:bg-black/65"
+        aria-hidden="true"
+      />
 
       <div
         ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
-        className="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-900"
+        className="pokdex-modal-panel pokdex-modal-animate max-h-[92vh] sm:max-h-[90vh]"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="sticky top-0 flex items-center justify-between border-b border-gray-200 bg-white px-6 py-4 dark:border-gray-700 dark:bg-gray-900">
-          <h2
-            id={titleId}
-            className="text-xl font-bold text-gray-900 dark:text-gray-100"
-          >
-            {title}
-          </h2>
+        <div className="pokdex-modal-header flex items-start justify-between gap-4">
+          <div className="min-w-0 pt-1">
+            {subtitle ? (
+              <p className="pokdex-mono mb-1 text-xs font-medium tracking-wide text-gold">
+                {subtitle}
+              </p>
+            ) : null}
+            <h2
+              id={titleId}
+              className="pokdex-display truncate text-2xl font-semibold leading-tight text-ink dark:text-ink-dark"
+            >
+              {title}
+            </h2>
+          </div>
+
           <button
             ref={closeButtonRef}
             type="button"
             onClick={onClose}
-            className="rounded-lg p-2 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+            className="shrink-0 rounded-lg border border-border bg-surface p-2 text-ink-muted transition-colors hover:border-border-strong hover:bg-parchment hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-parchment dark:border-border-dark dark:bg-surface-dark dark:text-ink-muted-dark dark:hover:bg-parchment-deep-dark dark:hover:text-ink-dark dark:focus-visible:ring-offset-parchment-dark"
             aria-label="Close dialog"
           >
-            <span aria-hidden="true" className="text-xl leading-none">
-              ×
-            </span>
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 24 24"
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
           </button>
         </div>
 
-        <div className="px-6 py-4">{children}</div>
+        <div className="overflow-y-auto px-6 py-5">{children}</div>
       </div>
     </div>,
     document.body,

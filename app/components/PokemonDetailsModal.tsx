@@ -27,6 +27,28 @@ function formatWeight(kg: number): string {
   return `${kg.toFixed(1)} kg`;
 }
 
+type TraitBadgeProps = {
+  label: string;
+  tone: "baby" | "legendary" | "mythical";
+};
+
+function TraitBadge({ label, tone }: TraitBadgeProps) {
+  const toneClass =
+    tone === "baby"
+      ? "border-pink-300/60 bg-pink-50 text-pink-900 dark:border-pink-800 dark:bg-pink-950/40 dark:text-pink-200"
+      : tone === "legendary"
+        ? "border-amber-300/60 bg-amber-50 text-amber-900 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
+        : "border-violet-300/60 bg-violet-50 text-violet-900 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-200";
+
+  return (
+    <span
+      className={`inline-flex rounded-full border px-2.5 py-0.5 text-[0.6875rem] font-semibold uppercase tracking-wide ${toneClass}`}
+    >
+      {label}
+    </span>
+  );
+}
+
 export function PokemonDetailsModal({ triggerRef }: PokemonDetailsModalProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const pokemonName = searchParams.get("pokemon");
@@ -77,6 +99,7 @@ export function PokemonDetailsModal({ triggerRef }: PokemonDetailsModalProps) {
   }
 
   const title = viewModel?.displayName ?? formatPokemonName(pokemonName ?? "");
+  const subtitle = viewModel ? formatEntryNumber(viewModel.id) : undefined;
   const displayImageUrl =
     showShiny && viewModel?.shinyImageUrl
       ? viewModel.shinyImageUrl
@@ -87,13 +110,14 @@ export function PokemonDetailsModal({ triggerRef }: PokemonDetailsModalProps) {
       isOpen={isOpen}
       onClose={handleClose}
       title={title}
+      subtitle={subtitle}
       titleId="pokemon-details-title"
       triggerRef={triggerRef}
     >
       <div data-testid="pokemon-details-modal">
         {isLoading ? (
-          <div className="flex justify-center py-16">
-            <Spinner className="h-8 w-8 text-blue-600" />
+          <div className="flex justify-center py-20">
+            <Spinner className="h-8 w-8 text-crimson" />
           </div>
         ) : null}
 
@@ -102,134 +126,126 @@ export function PokemonDetailsModal({ triggerRef }: PokemonDetailsModalProps) {
         ) : null}
 
         {!isLoading && !isError && viewModel ? (
-          <div className="space-y-6">
-            <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
-              <div className="flex flex-col items-center">
-                {displayImageUrl ? (
-                  <img
-                    src={displayImageUrl}
-                    alt={viewModel.displayName}
-                    className="h-40 w-40 object-contain"
-                  />
-                ) : (
-                  <div className="flex h-40 w-40 items-center justify-center text-sm text-gray-400">
-                    No image
-                  </div>
-                )}
+          <div className="space-y-8">
+            <div className="grid gap-6 sm:grid-cols-[minmax(0,11rem)_1fr] sm:items-start">
+              <div className="flex flex-col items-center gap-3">
+                <div className="pokdex-specimen-plate w-full">
+                  {displayImageUrl ? (
+                    <img
+                      src={displayImageUrl}
+                      alt={viewModel.displayName}
+                      className="h-36 w-36 object-contain drop-shadow-[0_8px_16px_rgba(28,25,23,0.15)]"
+                    />
+                  ) : (
+                    <div className="flex h-36 w-36 items-center justify-center text-sm text-ink-faint">
+                      No image
+                    </div>
+                  )}
+                </div>
 
                 {viewModel.shinyImageUrl ? (
                   <button
                     type="button"
                     onClick={() => setShowShiny((current) => !current)}
-                    className="mt-2 rounded-lg border border-gray-200 px-3 py-1 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                    aria-pressed={showShiny}
+                    className={`rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wide transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-surface-raised dark:focus-visible:ring-offset-surface-raised-dark ${
+                      showShiny
+                        ? "border-gold-soft bg-gold-soft/15 text-gold"
+                        : "border-border bg-surface text-ink-muted hover:border-border-strong hover:text-ink dark:border-border-dark dark:bg-surface-dark dark:text-ink-muted-dark dark:hover:text-ink-dark"
+                    }`}
                   >
-                    {showShiny ? "Show normal" : "Show shiny"}
+                    {showShiny ? "Normal form" : "Shiny form"}
                   </button>
                 ) : null}
               </div>
 
-              <div className="flex-1 space-y-2 text-center sm:text-left">
-                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                  {formatEntryNumber(viewModel.id)}
-                </p>
-
+              <div className="space-y-4 text-center sm:text-left">
                 {viewModel.genus ? (
-                  <p className="text-sm italic text-gray-600 dark:text-gray-400">
+                  <p className="text-sm italic text-ink-muted dark:text-ink-muted-dark">
                     {viewModel.genus}
                   </p>
                 ) : null}
 
-                <div className="flex flex-wrap justify-center gap-1 sm:justify-start">
+                <div className="flex flex-wrap justify-center gap-1.5 sm:justify-start">
                   {viewModel.types.map((type) => (
                     <PokemonTypeBadge key={type} type={type} />
                   ))}
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-2 sm:justify-start">
-                  {viewModel.isBaby ? (
-                    <span className="rounded-full bg-pink-100 px-2 py-0.5 text-xs font-medium text-pink-800 dark:bg-pink-950 dark:text-pink-300">
-                      Baby
-                    </span>
-                  ) : null}
+                  {viewModel.isBaby ? <TraitBadge label="Baby" tone="baby" /> : null}
                   {viewModel.isLegendary ? (
-                    <span className="rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-800 dark:bg-yellow-950 dark:text-yellow-300">
-                      Legendary
-                    </span>
+                    <TraitBadge label="Legendary" tone="legendary" />
                   ) : null}
                   {viewModel.isMythical ? (
-                    <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-800 dark:bg-purple-950 dark:text-purple-300">
-                      Mythical
-                    </span>
+                    <TraitBadge label="Mythical" tone="mythical" />
                   ) : null}
                 </div>
+
+                {viewModel.description ? (
+                  <blockquote className="border-l-2 border-crimson/40 pl-4 text-left text-sm leading-relaxed text-ink-muted dark:text-ink-muted-dark">
+                    {viewModel.description}
+                  </blockquote>
+                ) : null}
               </div>
             </div>
 
-            {viewModel.description ? (
-              <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
-                {viewModel.description}
-              </p>
-            ) : null}
-
-            <dl className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-              <div>
-                <dt className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                  Height
-                </dt>
-                <dd className="mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100">
-                  {formatHeight(viewModel.heightMeters)}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                  Weight
-                </dt>
-                <dd className="mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100">
-                  {formatWeight(viewModel.weightKg)}
-                </dd>
-              </div>
-              {viewModel.captureRate !== null ? (
-                <div>
-                  <dt className="text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    Capture rate
+            <section aria-label="Physical attributes">
+              <h3 className="pokdex-section-title">Attributes</h3>
+              <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                <div className="rounded-xl border border-border bg-parchment/50 p-3 dark:border-border-dark dark:bg-parchment-deep-dark/50">
+                  <dt className="text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-ink-faint dark:text-ink-muted-dark">
+                    Height
                   </dt>
-                  <dd className="mt-1 text-sm font-semibold text-gray-900 dark:text-gray-100">
-                    {viewModel.captureRate}
+                  <dd className="pokdex-mono mt-1 text-base font-semibold tabular-nums text-ink dark:text-ink-dark">
+                    {formatHeight(viewModel.heightMeters)}
                   </dd>
                 </div>
-              ) : null}
-            </dl>
+                <div className="rounded-xl border border-border bg-parchment/50 p-3 dark:border-border-dark dark:bg-parchment-deep-dark/50">
+                  <dt className="text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-ink-faint dark:text-ink-muted-dark">
+                    Weight
+                  </dt>
+                  <dd className="pokdex-mono mt-1 text-base font-semibold tabular-nums text-ink dark:text-ink-dark">
+                    {formatWeight(viewModel.weightKg)}
+                  </dd>
+                </div>
+                {viewModel.captureRate !== null ? (
+                  <div className="rounded-xl border border-border bg-parchment/50 p-3 dark:border-border-dark dark:bg-parchment-deep-dark/50">
+                    <dt className="text-[0.625rem] font-semibold uppercase tracking-[0.12em] text-ink-faint dark:text-ink-muted-dark">
+                      Capture rate
+                    </dt>
+                    <dd className="pokdex-mono mt-1 text-base font-semibold tabular-nums text-ink dark:text-ink-dark">
+                      {viewModel.captureRate}
+                    </dd>
+                  </div>
+                ) : null}
+              </dl>
+            </section>
 
-            <div>
-              <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                Abilities
-              </h3>
+            <section aria-label="Abilities">
+              <h3 className="pokdex-section-title">Abilities</h3>
               <ul className="flex flex-wrap gap-2">
                 {viewModel.abilities.map((ability) => (
                   <li
                     key={ability.name}
-                    className={`rounded-lg px-3 py-1 text-sm ${
-                      ability.isHidden
-                        ? "border border-dashed border-gray-400 bg-gray-50 text-gray-700 dark:border-gray-500 dark:bg-gray-800 dark:text-gray-300"
-                        : "bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100"
-                    }`}
+                    className={
+                      ability.isHidden ? "pokdex-chip pokdex-chip--hidden" : "pokdex-chip"
+                    }
                   >
                     {ability.displayName}
                     {ability.isHidden ? (
-                      <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">
+                      <span className="ml-1.5 text-xs text-ink-faint dark:text-ink-muted-dark">
                         (hidden)
                       </span>
                     ) : null}
                   </li>
                 ))}
               </ul>
-            </div>
+            </section>
 
-            <div>
-              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                Base stats
-              </h3>
-              <div className="space-y-2">
+            <section aria-label="Base stats">
+              <h3 className="pokdex-section-title">Base stats</h3>
+              <div className="space-y-2.5">
                 {viewModel.stats.map((stat) => (
                   <StatBar
                     key={stat.name}
@@ -239,7 +255,7 @@ export function PokemonDetailsModal({ triggerRef }: PokemonDetailsModalProps) {
                   />
                 ))}
               </div>
-            </div>
+            </section>
 
             {evolutionSteps.length > 0 ? (
               <EvolutionChain
