@@ -79,7 +79,9 @@ test("focus returns to card after closing modal", async ({ page }) => {
 
   const bulbasaurCard = page.getByRole("button", { name: "Bulbasaur" });
   await bulbasaurCard.click();
+  await expect(page).toHaveURL(/pokemon=bulbasaur/);
   await expect(page.getByRole("dialog")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Close dialog" })).toBeFocused();
 
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).not.toBeVisible();
