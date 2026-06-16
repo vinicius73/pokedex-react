@@ -138,6 +138,8 @@ body::before {
   }
 
   .pokdex-modal-panel {
+    border: none;
+    padding: 0;
     @apply relative z-10 flex max-h-[90vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-border bg-surface-raised shadow-[0_24px_64px_rgba(28,25,23,0.18),0_1px_0_rgba(255,255,255,0.9)_inset];
   }
 
