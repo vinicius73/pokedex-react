@@ -2,19 +2,14 @@ import { formatPokemonName } from "~/lib/pokemon/utils/formatPokemonName";
 import { getPokemonImage } from "~/lib/pokemon/utils/getPokemonImage";
 import { normalizeFlavorText } from "~/lib/pokemon/utils/normalizeFlavorText";
 import type { Pokedex, Pokemon, PokemonSpecies } from "~/types/api";
-import type {
-  PokemonDetailsViewModel,
-  PokemonListItem,
-} from "~/types/viewModels";
+import type { PokemonDetailsViewModel, PokemonListItem } from "~/types/viewModels";
 
 type PokedexEntry = Pokedex["pokemon_entries"][number];
 
 const ENGLISH_LANGUAGE = "en";
 
 function getEnglishFlavorText(species: PokemonSpecies): string | null {
-  const entry = species.flavor_text_entries.find(
-    (item) => item.language.name === ENGLISH_LANGUAGE,
-  );
+  const entry = species.flavor_text_entries.find((item) => item.language.name === ENGLISH_LANGUAGE);
 
   if (!entry) {
     return null;
@@ -24,9 +19,7 @@ function getEnglishFlavorText(species: PokemonSpecies): string | null {
 }
 
 function getEnglishGenus(species: PokemonSpecies): string | null {
-  const entry = species.genera.find(
-    (item) => item.language.name === ENGLISH_LANGUAGE,
-  );
+  const entry = species.genera.find((item) => item.language.name === ENGLISH_LANGUAGE);
 
   return entry?.genus ?? null;
 }
@@ -36,15 +29,10 @@ function getPokemonShinyImage(pokemon: Pokemon): string | null {
 }
 
 function getSortedTypeNames(pokemon: Pokemon): string[] {
-  return [...pokemon.types]
-    .sort((a, b) => a.slot - b.slot)
-    .map((item) => item.type.name);
+  return [...pokemon.types].sort((a, b) => a.slot - b.slot).map((item) => item.type.name);
 }
 
-export function mapPokemonListItem(
-  entry: PokedexEntry,
-  pokemon: Pokemon,
-): PokemonListItem {
+export function mapPokemonListItem(entry: PokedexEntry, pokemon: Pokemon): PokemonListItem {
   return {
     entryNumber: entry.entry_number,
     id: pokemon.id,

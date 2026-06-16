@@ -45,16 +45,12 @@ export function EvolutionChain({
         {steps.map((step, index) => {
           const displayName = formatPokemonName(step.speciesName);
           const spriteUrl = getSpeciesSpriteUrl(step.speciesUrl);
-          const isCurrent =
-            step.speciesName.toLowerCase() === currentSpeciesName.toLowerCase();
+          const isCurrent = step.speciesName.toLowerCase() === currentSpeciesName.toLowerCase();
 
           return (
             <div key={step.speciesUrl} className="flex items-center gap-2">
               {index > 0 ? (
-                <span
-                  aria-hidden="true"
-                  className="pokdex-mono text-sm font-medium text-gold"
-                >
+                <span aria-hidden="true" className="pokdex-mono text-sm font-medium text-gold">
                   →
                 </span>
               ) : null}
@@ -64,20 +60,12 @@ export function EvolutionChain({
                 onClick={() => onSelectSpecies(step.speciesName)}
                 disabled={isCurrent}
                 className="pokdex-evolution-step"
-                aria-label={
-                  isCurrent
-                    ? `${displayName} (current)`
-                    : `View ${displayName}`
-                }
+                aria-label={isCurrent ? `${displayName} (current)` : `View ${displayName}`}
                 aria-current={isCurrent ? "true" : undefined}
               >
                 <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-gradient-to-b from-parchment to-parchment-deep/70 dark:from-parchment-deep-dark dark:to-parchment-dark">
                   {spriteUrl ? (
-                    <img
-                      src={spriteUrl}
-                      alt=""
-                      className="h-14 w-14 object-contain"
-                    />
+                    <img src={spriteUrl} alt="" className="h-14 w-14 object-contain" />
                   ) : (
                     <span className="text-xs text-ink-faint">No image</span>
                   )}

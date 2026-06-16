@@ -5,8 +5,7 @@ export const pokemonQueryKeys = {
 
   pokedex: (pokedexName: string) => ["pokedex", pokedexName] as const,
 
-  pokemon: (pokemonNameOrId: string | number) =>
-    ["pokemon", pokemonNameOrId] as const,
+  pokemon: (pokemonNameOrId: string | number) => ["pokemon", pokemonNameOrId] as const,
 
   pokemonSpecies: (speciesNameOrId: string | number) =>
     ["pokemon-species", speciesNameOrId] as const,

@@ -8,15 +8,15 @@ A aplicação deve consumir a PokeAPI v2 para listar Pokémon por região. Cada 
 
 A implementação deve priorizar:
 
-* arquitetura simples;
-* TypeScript bem tipado;
-* client HTTP centralizado;
-* uso de Ky, não `fetch` direto;
-* injeção do client via Context API;
-* baixo acoplamento;
-* boa testabilidade futura;
-* testes iniciais com Playwright usando API real;
-* poucos golden tests no primeiro momento.
+- arquitetura simples;
+- TypeScript bem tipado;
+- client HTTP centralizado;
+- uso de Ky, não `fetch` direto;
+- injeção do client via Context API;
+- baixo acoplamento;
+- boa testabilidade futura;
+- testes iniciais com Playwright usando API real;
+- poucos golden tests no primeiro momento.
 
 ---
 
@@ -29,27 +29,28 @@ A aplicação deve permitir que o usuário:
 3. Veja a lista de Pokémon daquela região.
 4. Veja em cada card:
 
-   * número da Pokédex regional;
-   * nome;
-   * imagem;
-   * tipos.
+   - número da Pokédex regional;
+   - nome;
+   - imagem;
+   - tipos.
+
 5. Filtre Pokémon por nome.
 6. Filtre Pokémon por tipo.
 7. Clique em um Pokémon.
 8. Veja um modal com detalhes:
 
-   * imagem;
-   * nome;
-   * ID nacional;
-   * tipos;
-   * altura;
-   * peso;
-   * abilities;
-   * stats;
-   * descrição;
-   * categoria;
-   * flags como bebê, lendário e mítico;
-   * cadeia evolutiva, se implementada.
+   - imagem;
+   - nome;
+   - ID nacional;
+   - tipos;
+   - altura;
+   - peso;
+   - abilities;
+   - stats;
+   - descrição;
+   - categoria;
+   - flags como bebê, lendário e mítico;
+   - cadeia evolutiva, se implementada.
 
 ---
 
@@ -119,13 +120,13 @@ const pokeApiClient = usePokeApiClient();
 
 Eles não devem conhecer:
 
-* `ky`;
-* `fetch`;
-* URL base;
-* headers;
-* retry;
-* timeout;
-* detalhes de transporte HTTP.
+- `ky`;
+- `fetch`;
+- URL base;
+- headers;
+- retry;
+- timeout;
+- detalhes de transporte HTTP.
 
 Fluxo arquitetural:
 
@@ -165,20 +166,20 @@ Motivo: a PokeAPI modela região por meio de `region.pokedexes`, e os Pokémon r
 
 A lista deve carregar apenas o necessário para os cards:
 
-* nome;
-* imagem;
-* tipos;
-* número regional.
+- nome;
+- imagem;
+- tipos;
+- número regional.
 
 O modal deve carregar dados mais detalhados:
 
-* espécie;
-* descrição;
-* categoria;
-* cadeia evolutiva;
-* stats;
-* abilities;
-* flags especiais.
+- espécie;
+- descrição;
+- categoria;
+- cadeia evolutiva;
+- stats;
+- abilities;
+- flags especiais.
 
 ---
 
@@ -186,13 +187,13 @@ O modal deve carregar dados mais detalhados:
 
 TanStack Query deve ser usado para:
 
-* cache;
-* loading states;
-* error states;
-* retry controlado;
-* evitar chamadas repetidas;
-* propagar `AbortSignal`;
-* simplificar chamadas paralelas.
+- cache;
+- loading states;
+- error states;
+- retry controlado;
+- evitar chamadas repetidas;
+- propagar `AbortSignal`;
+- simplificar chamadas paralelas.
 
 Configuração recomendada:
 
@@ -231,7 +232,7 @@ GET /region
 
 Uso:
 
-* carregar abas ou seletor de regiões.
+- carregar abas ou seletor de regiões.
 
 Tipos:
 
@@ -259,7 +260,7 @@ GET /region/{regionName}
 
 Uso:
 
-* descobrir quais Pokédexes pertencem à região.
+- descobrir quais Pokédexes pertencem à região.
 
 Tipo:
 
@@ -280,9 +281,9 @@ export type Region = {
 
 Regra:
 
-* se a região tiver uma Pokédex, carregar automaticamente;
-* se tiver múltiplas, exibir seletor;
-* opcionalmente, oferecer opção “Todos”.
+- se a região tiver uma Pokédex, carregar automaticamente;
+- se tiver múltiplas, exibir seletor;
+- opcionalmente, oferecer opção “Todos”.
 
 ---
 
@@ -294,7 +295,7 @@ GET /pokedex/{pokedexName}
 
 Uso:
 
-* obter entradas regionais de Pokémon.
+- obter entradas regionais de Pokémon.
 
 Tipo:
 
@@ -323,7 +324,7 @@ export type Pokedex = {
 Campo principal:
 
 ```ts
-pokedex.pokemon_entries
+pokedex.pokemon_entries;
 ```
 
 ---
@@ -336,13 +337,13 @@ GET /pokemon/{pokemonNameOrId}
 
 Uso:
 
-* imagem;
-* tipos;
-* altura;
-* peso;
-* abilities;
-* stats;
-* ID nacional.
+- imagem;
+- tipos;
+- altura;
+- peso;
+- abilities;
+- stats;
+- ID nacional.
 
 Tipo:
 
@@ -386,10 +387,10 @@ export type Pokemon = {
 Prioridade de imagem:
 
 ```ts
-pokemon.sprites.other?.["official-artwork"]?.front_default
-  ?? pokemon.sprites.other?.home?.front_default
-  ?? pokemon.sprites.front_default
-  ?? null
+pokemon.sprites.other?.["official-artwork"]?.front_default ??
+  pokemon.sprites.other?.home?.front_default ??
+  pokemon.sprites.front_default ??
+  null;
 ```
 
 ---
@@ -402,12 +403,12 @@ GET /pokemon-species/{speciesNameOrId}
 
 Uso:
 
-* descrição;
-* categoria;
-* capture rate;
-* happiness;
-* flags;
-* evolution chain.
+- descrição;
+- categoria;
+- capture rate;
+- happiness;
+- flags;
+- evolution chain.
 
 Tipo:
 
@@ -452,7 +453,7 @@ GET /evolution-chain/{id}
 A URL vem de:
 
 ```ts
-pokemonSpecies.evolution_chain.url
+pokemonSpecies.evolution_chain.url;
 ```
 
 Tipo:
@@ -491,9 +492,9 @@ GET /type/{typeName}
 
 Uso opcional:
 
-* fraquezas;
-* resistências;
-* imunidades.
+- fraquezas;
+- resistências;
+- imunidades.
 
 Não é necessário para os badges, porque `/pokemon/{name}` já retorna os tipos.
 
@@ -634,7 +635,7 @@ export function createKyHttpClient({
     },
     hooks: {
       beforeRequest: [
-        request => {
+        (request) => {
           request.headers.set("Accept", "application/json");
         },
       ],
@@ -647,10 +648,7 @@ export function createKyHttpClient({
 class KyHttpClient implements HttpClient {
   constructor(private readonly client: KyInstance) {}
 
-  async get<TResponse>(
-    pathOrUrl: string,
-    options?: HttpRequestOptions,
-  ): Promise<TResponse> {
+  async get<TResponse>(pathOrUrl: string, options?: HttpRequestOptions): Promise<TResponse> {
     return this.client
       .get(pathOrUrl, {
         searchParams: options?.searchParams,
@@ -695,25 +693,16 @@ export interface PokeApiClient {
 
   getPokedex(pokedexName: string, options?: RequestOptions): Promise<Pokedex>;
 
-  getPokemon(
-    pokemonNameOrId: string | number,
-    options?: RequestOptions,
-  ): Promise<Pokemon>;
+  getPokemon(pokemonNameOrId: string | number, options?: RequestOptions): Promise<Pokemon>;
 
   getPokemonSpecies(
     speciesNameOrId: string | number,
     options?: RequestOptions,
   ): Promise<PokemonSpecies>;
 
-  getEvolutionChainByUrl(
-    url: string,
-    options?: RequestOptions,
-  ): Promise<EvolutionChain>;
+  getEvolutionChainByUrl(url: string, options?: RequestOptions): Promise<EvolutionChain>;
 
-  getType(
-    typeName: string,
-    options?: RequestOptions,
-  ): Promise<PokemonTypeDetails>;
+  getType(typeName: string, options?: RequestOptions): Promise<PokemonTypeDetails>;
 }
 ```
 
@@ -766,16 +755,10 @@ export function createPokeApiClient(httpClient: HttpClient): PokeApiClient {
       });
     },
 
-    getPokemonSpecies(
-      speciesNameOrId: string | number,
-      options?: RequestOptions,
-    ) {
-      return httpClient.get<PokemonSpecies>(
-        `pokemon-species/${speciesNameOrId}`,
-        {
-          signal: options?.signal,
-        },
-      );
+    getPokemonSpecies(speciesNameOrId: string | number, options?: RequestOptions) {
+      return httpClient.get<PokemonSpecies>(`pokemon-species/${speciesNameOrId}`, {
+        signal: options?.signal,
+      });
     },
 
     getEvolutionChainByUrl(url: string, options?: RequestOptions) {
@@ -804,11 +787,7 @@ app/lib/pokemon/PokeApiClientContext.tsx
 ```
 
 ```tsx
-import {
-  createContext,
-  useContext,
-  type PropsWithChildren,
-} from "react";
+import { createContext, useContext, type PropsWithChildren } from "react";
 import type { PokeApiClient } from "./PokeApiClient";
 
 const PokeApiClientContext = createContext<PokeApiClient | null>(null);
@@ -817,24 +796,15 @@ type PokeApiClientProviderProps = PropsWithChildren<{
   client: PokeApiClient;
 }>;
 
-export function PokeApiClientProvider({
-  client,
-  children,
-}: PokeApiClientProviderProps) {
-  return (
-    <PokeApiClientContext.Provider value={client}>
-      {children}
-    </PokeApiClientContext.Provider>
-  );
+export function PokeApiClientProvider({ client, children }: PokeApiClientProviderProps) {
+  return <PokeApiClientContext.Provider value={client}>{children}</PokeApiClientContext.Provider>;
 }
 
 export function usePokeApiClient(): PokeApiClient {
   const client = useContext(PokeApiClientContext);
 
   if (!client) {
-    throw new Error(
-      "usePokeApiClient must be used within PokeApiClientProvider",
-    );
+    throw new Error("usePokeApiClient must be used within PokeApiClientProvider");
   }
 
   return client;
@@ -880,9 +850,7 @@ export function AppProviders({ children }: PropsWithChildren) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <PokeApiClientProvider client={pokeApiClient}>
-        {children}
-      </PokeApiClientProvider>
+      <PokeApiClientProvider client={pokeApiClient}>{children}</PokeApiClientProvider>
     </QueryClientProvider>
   );
 }
@@ -902,23 +870,18 @@ app/lib/pokemon/pokemonQueryKeys.ts
 export const pokemonQueryKeys = {
   regions: ["regions"] as const,
 
-  region: (regionName: string) =>
-    ["region", regionName] as const,
+  region: (regionName: string) => ["region", regionName] as const,
 
-  pokedex: (pokedexName: string) =>
-    ["pokedex", pokedexName] as const,
+  pokedex: (pokedexName: string) => ["pokedex", pokedexName] as const,
 
-  pokemon: (pokemonNameOrId: string | number) =>
-    ["pokemon", pokemonNameOrId] as const,
+  pokemon: (pokemonNameOrId: string | number) => ["pokemon", pokemonNameOrId] as const,
 
   pokemonSpecies: (speciesNameOrId: string | number) =>
     ["pokemon-species", speciesNameOrId] as const,
 
-  evolutionChain: (url: string) =>
-    ["evolution-chain", url] as const,
+  evolutionChain: (url: string) => ["evolution-chain", url] as const,
 
-  type: (typeName: string) =>
-    ["type", typeName] as const,
+  type: (typeName: string) => ["type", typeName] as const,
 };
 ```
 
@@ -960,9 +923,7 @@ export function useRegion(regionName: string | null) {
   const pokeApiClient = usePokeApiClient();
 
   return useQuery({
-    queryKey: regionName
-      ? pokemonQueryKeys.region(regionName)
-      : ["region", "empty"],
+    queryKey: regionName ? pokemonQueryKeys.region(regionName) : ["region", "empty"],
     enabled: Boolean(regionName),
     queryFn: ({ signal }) => {
       if (!regionName) {
@@ -990,9 +951,7 @@ export function usePokedex(pokedexName: string | null) {
   const pokeApiClient = usePokeApiClient();
 
   return useQuery({
-    queryKey: pokedexName
-      ? pokemonQueryKeys.pokedex(pokedexName)
-      : ["pokedex", "empty"],
+    queryKey: pokedexName ? pokemonQueryKeys.pokedex(pokedexName) : ["pokedex", "empty"],
     enabled: Boolean(pokedexName),
     queryFn: ({ signal }) => {
       if (!pokedexName) {
@@ -1020,9 +979,7 @@ export function usePokemon(pokemonNameOrId: string | number | null) {
   const pokeApiClient = usePokeApiClient();
 
   return useQuery({
-    queryKey: pokemonNameOrId
-      ? pokemonQueryKeys.pokemon(pokemonNameOrId)
-      : ["pokemon", "empty"],
+    queryKey: pokemonNameOrId ? pokemonQueryKeys.pokemon(pokemonNameOrId) : ["pokemon", "empty"],
     enabled: Boolean(pokemonNameOrId),
     queryFn: ({ signal }) => {
       if (!pokemonNameOrId) {
@@ -1050,9 +1007,7 @@ export function usePokemonDetails(pokemonName: string | null) {
   const pokeApiClient = usePokeApiClient();
 
   const pokemonQuery = useQuery({
-    queryKey: pokemonName
-      ? pokemonQueryKeys.pokemon(pokemonName)
-      : ["pokemon", "empty"],
+    queryKey: pokemonName ? pokemonQueryKeys.pokemon(pokemonName) : ["pokemon", "empty"],
     enabled: Boolean(pokemonName),
     queryFn: ({ signal }) => {
       if (!pokemonName) {
@@ -1097,14 +1052,8 @@ export function usePokemonDetails(pokemonName: string | null) {
     pokemonQuery,
     speciesQuery,
     evolutionChainQuery,
-    isLoading:
-      pokemonQuery.isLoading ||
-      speciesQuery.isLoading ||
-      evolutionChainQuery.isLoading,
-    isError:
-      pokemonQuery.isError ||
-      speciesQuery.isError ||
-      evolutionChainQuery.isError,
+    isLoading: pokemonQuery.isLoading || speciesQuery.isLoading || evolutionChainQuery.isLoading,
+    isError: pokemonQuery.isError || speciesQuery.isError || evolutionChainQuery.isError,
   };
 }
 ```
@@ -1171,7 +1120,7 @@ export type PokemonDetailsViewModel = {
 export function formatPokemonName(name: string): string {
   return name
     .split("-")
-    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join(" ");
 }
 ```
@@ -1201,11 +1150,7 @@ export function getPokemonImage(pokemon: Pokemon): string | null {
 
 ```ts
 export function normalizeFlavorText(value: string): string {
-  return value
-    .replace(/\f/g, " ")
-    .replace(/\n/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+  return value.replace(/\f/g, " ").replace(/\n/g, " ").replace(/\s+/g, " ").trim();
 }
 ```
 
@@ -1215,8 +1160,8 @@ export function normalizeFlavorText(value: string): string {
 
 A PokeAPI retorna:
 
-* altura em decímetros;
-* peso em hectogramas.
+- altura em decímetros;
+- peso em hectogramas.
 
 Converter assim:
 
@@ -1347,10 +1292,10 @@ remove pokemon from search params
 
 Benefícios:
 
-* permite deep link;
-* mantém contexto da região;
-* facilita reload da página com modal aberto;
-* evita complexidade de rotas paralelas.
+- permite deep link;
+- mantém contexto da região;
+- facilita reload da página com modal aberto;
+- evita complexidade de rotas paralelas.
 
 ---
 
@@ -1358,16 +1303,16 @@ Benefícios:
 
 O modal deve:
 
-* abrir ao clicar no card;
-* buscar detalhes sob demanda;
-* fechar pelo botão;
-* fechar com `Esc`;
-* fechar ao clicar no backdrop;
-* prender foco enquanto aberto;
-* devolver foco ao card depois de fechar;
-* usar `role="dialog"`;
-* usar `aria-modal="true"`;
-* ter título associado via `aria-labelledby`.
+- abrir ao clicar no card;
+- buscar detalhes sob demanda;
+- fechar pelo botão;
+- fechar com `Esc`;
+- fechar ao clicar no backdrop;
+- prender foco enquanto aberto;
+- devolver foco ao card depois de fechar;
+- usar `role="dialog"`;
+- usar `aria-modal="true"`;
+- ter título associado via `aria-labelledby`.
 
 ---
 
@@ -1375,17 +1320,17 @@ O modal deve:
 
 A aplicação deve lidar com:
 
-* carregando regiões;
-* erro ao carregar regiões;
-* carregando região;
-* erro ao carregar região;
-* região sem Pokédex;
-* carregando Pokédex;
-* erro ao carregar Pokédex;
-* lista vazia;
-* erro parcial em card individual;
-* carregando detalhes do modal;
-* erro no modal.
+- carregando regiões;
+- erro ao carregar regiões;
+- carregando região;
+- erro ao carregar região;
+- região sem Pokédex;
+- carregando Pokédex;
+- erro ao carregar Pokédex;
+- lista vazia;
+- erro parcial em card individual;
+- carregando detalhes do modal;
+- erro no modal.
 
 Erro em um card não deve quebrar a grade inteira.
 
@@ -1403,23 +1348,19 @@ Tipos indisponíveis
 
 Escopo do MVP:
 
-* filtro por nome;
-* filtro por tipo.
+- filtro por nome;
+- filtro por tipo.
 
 Regra de nome:
 
 ```ts
-const matchesName = pokemon.displayName
-  .toLowerCase()
-  .includes(searchTerm.toLowerCase());
+const matchesName = pokemon.displayName.toLowerCase().includes(searchTerm.toLowerCase());
 ```
 
 Regra de tipo:
 
 ```ts
-const matchesType = selectedType
-  ? pokemon.types.includes(selectedType)
-  : true;
+const matchesType = selectedType ? pokemon.types.includes(selectedType) : true;
 ```
 
 Ordenação padrão:
@@ -1484,15 +1425,15 @@ Evolução
 
 Requisitos:
 
-* cards devem ser botões ou links acessíveis por teclado;
-* evitar `<div onClick>`;
-* modal com `role="dialog"`;
-* modal com `aria-modal="true"`;
-* modal com título acessível;
-* `Esc` fecha o modal;
-* foco preso dentro do modal;
-* foco retorna ao card ao fechar;
-* imagens com `alt` descritivo.
+- cards devem ser botões ou links acessíveis por teclado;
+- evitar `<div onClick>`;
+- modal com `role="dialog"`;
+- modal com `aria-modal="true"`;
+- modal com título acessível;
+- `Esc` fecha o modal;
+- foco preso dentro do modal;
+- foco retorna ao card ao fechar;
+- imagens com `alt` descritivo.
 
 Exemplo:
 
@@ -1520,9 +1461,18 @@ As cores são definidas via `data-pokemon-type` em `app/app.css` (Tailwind CSS v
 
 ```css
 /* app/app.css */
-[data-pokemon-type="grass"]  { background-color: #63bc5a; color: #fff; }
-[data-pokemon-type="poison"] { background-color: #b567ce; color: #fff; }
-[data-pokemon-type="fire"]   { background-color: #ff9c54; color: #fff; }
+[data-pokemon-type="grass"] {
+  background-color: #63bc5a;
+  color: #fff;
+}
+[data-pokemon-type="poison"] {
+  background-color: #b567ce;
+  color: #fff;
+}
+[data-pokemon-type="fire"] {
+  background-color: #ff9c54;
+  color: #fff;
+}
 /* ... demais 15 tipos */
 ```
 
@@ -1537,29 +1487,29 @@ Centralizar todas as cores neste arquivo. Não espalhar lógica visual por múlt
 Componentes podem importar:
 
 ```ts
-useRegions
-useRegion
-usePokedex
-usePokemon
-usePokemonDetails
+useRegions;
+useRegion;
+usePokedex;
+usePokemon;
+usePokemonDetails;
 ```
 
 Hooks podem importar:
 
 ```ts
-usePokeApiClient
+usePokeApiClient;
 ```
 
 Client da PokeAPI pode importar:
 
 ```ts
-HttpClient
+HttpClient;
 ```
 
 Implementação HTTP pode importar:
 
 ```ts
-ky
+ky;
 ```
 
 ---
@@ -1569,17 +1519,17 @@ ky
 Componentes não podem importar:
 
 ```ts
-ky
-fetch
-createKyHttpClient
-createPokeApiClient
+ky;
+fetch;
+createKyHttpClient;
+createPokeApiClient;
 ```
 
 Hooks de feature não devem importar:
 
 ```ts
-ky
-fetch
+ky;
+fetch;
 ```
 
 ---
@@ -1618,19 +1568,17 @@ Como os testes usam a PokeAPI real, a suíte inicial deve ser pequena.
 
 Golden tests devem detectar regressões visuais grandes:
 
-* layout quebrado;
-* modal fora do lugar;
-* cards desalinhados;
-* filtros quebrando a grade;
-* responsividade ruim;
-* mudanças acidentais de UI.
+- layout quebrado;
+- modal fora do lugar;
+- cards desalinhados;
+- filtros quebrando a grade;
+- responsividade ruim;
+- mudanças acidentais de UI.
 
 Preferir screenshots de containers específicos:
 
 ```ts
-await expect(page.getByTestId("pokedex-page")).toHaveScreenshot(
-  "kanto-list.png",
-);
+await expect(page.getByTestId("pokedex-page")).toHaveScreenshot("kanto-list.png");
 ```
 
 Evitar screenshots de página inteira quando possível:
@@ -1655,13 +1603,13 @@ Capturar screenshot do container principal
 
 Valida:
 
-* carregamento de região;
-* carregamento de Pokédex;
-* renderização da grade;
-* cards;
-* imagens;
-* nomes;
-* tipos.
+- carregamento de região;
+- carregamento de Pokédex;
+- renderização da grade;
+- cards;
+- imagens;
+- nomes;
+- tipos.
 
 ---
 
@@ -1679,10 +1627,10 @@ Capturar screenshot da listagem
 
 Valida:
 
-* campo de busca;
-* filtro client-side;
-* card filtrado;
-* estado visual da grade.
+- campo de busca;
+- filtro client-side;
+- card filtrado;
+- estado visual da grade.
 
 ---
 
@@ -1699,11 +1647,11 @@ Capturar screenshot do modal
 
 Valida:
 
-* clique no card;
-* query param do modal;
-* carregamento sob demanda;
-* layout do modal;
-* dados principais.
+- clique no card;
+- query param do modal;
+- carregamento sob demanda;
+- layout do modal;
+- dados principais.
 
 ---
 
@@ -1720,11 +1668,11 @@ Capturar screenshot do container principal
 
 Valida:
 
-* responsividade;
-* grid mobile;
-* header;
-* filtros;
-* cards.
+- responsividade;
+- grid mobile;
+- header;
+- filtros;
+- cards.
 
 ---
 
@@ -1800,12 +1748,9 @@ test.describe("Pokédex golden tests", () => {
     await expect(page.getByRole("heading", { name: /pokédex/i })).toBeVisible();
     await expect(page.getByRole("button", { name: /bulbasaur/i })).toBeVisible();
 
-    await expect(page.getByTestId("pokedex-page")).toHaveScreenshot(
-      "kanto-list-desktop.png",
-      {
-        animations: "disabled",
-      },
-    );
+    await expect(page.getByTestId("pokedex-page")).toHaveScreenshot("kanto-list-desktop.png", {
+      animations: "disabled",
+    });
   });
 
   test("renders filtered list by Pokémon name", async ({ page }) => {
@@ -1813,9 +1758,7 @@ test.describe("Pokédex golden tests", () => {
 
     await expect(page.getByRole("button", { name: /bulbasaur/i })).toBeVisible();
 
-    await page
-      .getByRole("searchbox", { name: /buscar pokémon/i })
-      .fill("bulbasaur");
+    await page.getByRole("searchbox", { name: /buscar pokémon/i }).fill("bulbasaur");
 
     await expect(page.getByRole("button", { name: /bulbasaur/i })).toBeVisible();
 
@@ -1848,12 +1791,9 @@ test.describe("Pokédex golden tests", () => {
 
     await expect(page.getByRole("button", { name: /bulbasaur/i })).toBeVisible();
 
-    await expect(page.getByTestId("pokedex-page")).toHaveScreenshot(
-      "kanto-list-mobile.png",
-      {
-        animations: "disabled",
-      },
-    );
+    await expect(page.getByTestId("pokedex-page")).toHaveScreenshot("kanto-list-mobile.png", {
+      animations: "disabled",
+    });
   });
 });
 ```
@@ -1883,9 +1823,9 @@ Recomendado:
 Para interação e asserts funcionais, preferir:
 
 ```ts
-getByRole
-getByLabel
-getByText
+getByRole;
+getByLabel;
+getByText;
 ```
 
 Exemplos:
@@ -2042,69 +1982,70 @@ retorna null quando não existe
 
 ### 34.1 Arquitetura
 
-* O projeto usa Ky.
-* O projeto não usa `fetch` diretamente para consumir a PokeAPI.
-* Ky fica encapsulado em `KyHttpClient`.
-* Existe uma interface `HttpClient`.
-* Existe uma interface `PokeApiClient`.
-* `PokeApiClient` é injetado via Context API.
-* Componentes não conhecem Ky.
-* Hooks não conhecem Ky.
-* `AbortSignal` é propagado do TanStack Query até o Ky.
-* Timeout, retry e base URL ficam centralizados.
+- O projeto usa Ky.
+- O projeto não usa `fetch` diretamente para consumir a PokeAPI.
+- Ky fica encapsulado em `KyHttpClient`.
+- Existe uma interface `HttpClient`.
+- Existe uma interface `PokeApiClient`.
+- `PokeApiClient` é injetado via Context API.
+- Componentes não conhecem Ky.
+- Hooks não conhecem Ky.
+- `AbortSignal` é propagado do TanStack Query até o Ky.
+- Timeout, retry e base URL ficam centralizados.
 
 ---
 
 ### 34.2 Regiões
 
-* A aplicação carrega regiões da PokeAPI.
-* O usuário consegue selecionar uma região.
-* A região selecionada é refletida na URL.
-* Ao carregar uma região, a aplicação identifica suas Pokédexes.
-* Se houver múltiplas Pokédexes, a aplicação exibe seletor secundário.
+- A aplicação carrega regiões da PokeAPI.
+- O usuário consegue selecionar uma região.
+- A região selecionada é refletida na URL.
+- Ao carregar uma região, a aplicação identifica suas Pokédexes.
+- Se houver múltiplas Pokédexes, a aplicação exibe seletor secundário.
 
 ---
 
 ### 34.3 Lista
 
-* A aplicação lista Pokémon por Pokédex regional.
-* Cada card exibe:
+- A aplicação lista Pokémon por Pokédex regional.
+- Cada card exibe:
 
-  * número regional;
-  * nome;
-  * imagem;
-  * tipos.
-* A lista possui loading state.
-* A lista possui error state.
-* Erro em um card não quebra a tela inteira.
-* A lista pode ser filtrada por nome.
-* A lista pode ser filtrada por tipo.
+  - número regional;
+  - nome;
+  - imagem;
+  - tipos.
+
+- A lista possui loading state.
+- A lista possui error state.
+- Erro em um card não quebra a tela inteira.
+- A lista pode ser filtrada por nome.
+- A lista pode ser filtrada por tipo.
 
 ---
 
 ### 34.4 Modal
 
-* Clicar em um card abre modal.
-* Modal é controlado por query param.
-* URL com `?pokemon=bulbasaur` abre o modal diretamente.
-* Modal busca detalhes sob demanda.
-* Modal exibe dados principais do Pokémon.
-* Modal fecha por botão.
-* Modal fecha por `Esc`.
-* Modal fecha por backdrop.
-* Modal respeita acessibilidade básica.
+- Clicar em um card abre modal.
+- Modal é controlado por query param.
+- URL com `?pokemon=bulbasaur` abre o modal diretamente.
+- Modal busca detalhes sob demanda.
+- Modal exibe dados principais do Pokémon.
+- Modal fecha por botão.
+- Modal fecha por `Esc`.
+- Modal fecha por backdrop.
+- Modal respeita acessibilidade básica.
 
 ---
 
 ### 34.5 Testes
 
-* Testes iniciais usam Playwright.
-* Testes iniciais usam a PokeAPI real.
-* Testes iniciais não mockam `PokeApiClient`.
-* Testes iniciais não interceptam requests.
-* Golden tests cobrem poucos fluxos críticos.
-* Screenshots devem focar containers estáveis.
-* Interações devem usar roles e labels quando possível.
+- Testes iniciais usam Playwright.
+- Testes iniciais usam a PokeAPI real.
+- Testes iniciais não mockam `PokeApiClient`.
+- Testes iniciais não interceptam requests.
+- Golden tests cobrem poucos fluxos críticos.
+- Screenshots devem focar containers estáveis.
+- Interações devem usar roles e labels quando possível.
 
 ---
 
@@ -2112,19 +2053,19 @@ retorna null quando não existe
 
 Não implementar inicialmente:
 
-* favoritos persistidos;
-* autenticação;
-* backend próprio;
-* GraphQL;
-* modo offline completo;
-* comparação entre Pokémon;
-* infinite scroll;
-* virtualização;
-* tradução completa para português;
-* animações complexas;
-* busca global em todos os Pokémon;
-* cache persistente em IndexedDB;
-* mocks para testes de componentes.
+- favoritos persistidos;
+- autenticação;
+- backend próprio;
+- GraphQL;
+- modo offline completo;
+- comparação entre Pokémon;
+- infinite scroll;
+- virtualização;
+- tradução completa para português;
+- animações complexas;
+- busca global em todos os Pokémon;
+- cache persistente em IndexedDB;
+- mocks para testes de componentes.
 
 ---
 
@@ -2141,11 +2082,12 @@ Não implementar inicialmente:
 9. Criar `app/lib/pokemon/pokemonQueryKeys.ts`.
 10. Criar hooks em `app/hooks/`:
 
-    * `useRegions.ts`;
-    * `useRegion.ts`;
-    * `usePokedex.ts`;
-    * `usePokemon.ts`;
-    * `usePokemonDetails.ts`.
+    - `useRegions.ts`;
+    - `useRegion.ts`;
+    - `usePokedex.ts`;
+    - `usePokemon.ts`;
+    - `usePokemonDetails.ts`.
+
 11. Criar utils e mappers em `app/lib/pokemon/`.
 12. Criar componentes compartilhados: `Spinner`, `ErrorState`, `EmptyState`, `Modal`.
 13. Criar `app/routes/regions.$regionName.tsx` e registrar em `app/routes.ts`.

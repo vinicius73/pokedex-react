@@ -1,87 +1,110 @@
-# Welcome to React Router!
+# Pokédex AI
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A regional Pokédex browser built with React Router v7. Browse Pokémon by region using [PokeAPI v2](https://pokeapi.co/), filter by type, search by name, and open a detail modal with stats, flavor text, and evolution chain.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+This is a client-side SPA (`ssr: false`) — no server-side rendering.
 
-## Features
+## Stack
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- React 19, React Router v7, TypeScript 5.9
+- Tailwind CSS v4, Vite 8
+- TanStack Query + Ky for data fetching
+- Playwright for E2E tests
+- [Oxfmt](https://oxc.rs/docs/guide/usage/formatter.html) + [Oxlint](https://oxc.rs/docs/guide/usage/linter.html) for formatting and linting
 
 ## Getting Started
 
-### Installation
-
-Install the dependencies:
+Requires **Node.js ≥ 24**.
 
 ```bash
 npm install
-```
-
-### Development
-
-Start the development server with HMR:
-
-```bash
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
+The app runs at [http://localhost:5173](http://localhost:5173) and redirects to `/regions/kanto`.
 
-## Building for Production
+## Scripts
 
-Create a production build:
+| Script | Description |
+|---|---|
+| `npm run dev` | Start dev server with HMR |
+| `npm run build` | Production build |
+| `npm run start` | Preview production build on port 3000 |
+| `npm run typecheck` | React Router typegen + `tsc` |
+| `npm run fmt` | Format code with Oxfmt |
+| `npm run fmt:check` | Check formatting (CI) |
+| `npm run lint` | Lint with Oxlint |
+| `npm run lint:fix` | Lint and apply safe fixes |
+| `npm run test` | Run Playwright E2E tests |
+
+## Code Quality
+
+Formatting and linting use the [Oxc toolchain](https://oxc.rs/). Config files:
+
+- `.oxfmtrc.json` — formatting, Tailwind class sorting
+- `.oxlintrc.json` — linting with `correctness` at error and `denyWarnings: true`
+
+Run all checks locally:
 
 ```bash
-npm run build
+npm run fmt:check && npm run lint && npm run typecheck && npm run test
 ```
+
+CI (`.github/workflows/ci.yaml`) runs formatting, lint, typecheck, build, and E2E on every push and pull request.
+
+### Editor setup (optional)
+
+Install the [Oxc VS Code extension](https://marketplace.visualstudio.com/items?itemName=oxc.oxc-vscode) and add to your settings:
+
+```json
+{
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true
+}
+```
+
+## Project Structure
+
+```
+app/
+  routes/       # Route segments (home redirect, region page)
+  components/   # Shared UI (Modal, PokemonCard, RegionTabs, …)
+  hooks/        # TanStack Query hooks
+  lib/          # HTTP client, PokeAPI client, mappers, utils
+  types/        # API and view-model types
+tests/          # Playwright E2E specs
+```
+
+See `.cursor/rules/project-structure.mdc` for full conventions.
 
 ## Deployment
 
-### Docker Deployment
-
-To build and run using Docker:
+### Docker
 
 ```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+docker build -t pokedex-ai .
+docker run -p 3000:3000 pokedex-ai
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+The multi-stage build compiles the client bundle and serves it with Ferron.
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
+### Manual
 
-### DIY Deployment
+Build and serve the static client output:
 
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
+```bash
+npm run build
+npm run start
 ```
 
-## Styling
+Production output is in `build/client/`.
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+## Testing
 
----
+E2E tests use Playwright against the dev server and the live PokeAPI:
 
-Built with ❤️ using React Router.
+```bash
+npm run test
+```
+
+Tests cover region tabs, Pokédex switching, search/filter, and modal interactions (keyboard, focus trap, backdrop dismiss).

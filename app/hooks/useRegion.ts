@@ -6,9 +6,7 @@ export function useRegion(regionName: string | null) {
   const pokeApiClient = usePokeApiClient();
 
   return useQuery({
-    queryKey: regionName
-      ? pokemonQueryKeys.region(regionName)
-      : ["region", "empty"],
+    queryKey: regionName ? pokemonQueryKeys.region(regionName) : ["region", "empty"],
     enabled: Boolean(regionName),
     queryFn: ({ signal }) => {
       if (!regionName) {

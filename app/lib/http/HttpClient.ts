@@ -4,8 +4,5 @@ export type HttpRequestOptions = {
 };
 
 export interface HttpClient {
-  get<TResponse>(
-    pathOrUrl: string,
-    options?: HttpRequestOptions,
-  ): Promise<TResponse>;
+  get<TResponse>(pathOrUrl: string, options?: HttpRequestOptions): Promise<TResponse>;
 }

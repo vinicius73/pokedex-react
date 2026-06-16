@@ -5,9 +5,7 @@ export type EvolutionStep = {
   speciesUrl: string;
 };
 
-export function flattenEvolutionChain(
-  chain: EvolutionChainLink,
-): EvolutionStep[] {
+export function flattenEvolutionChain(chain: EvolutionChainLink): EvolutionStep[] {
   const result: EvolutionStep[] = [];
 
   function visit(link: EvolutionChainLink): void {

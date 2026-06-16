@@ -20,17 +20,10 @@ function matchesTypeFilter(types: string[], typeFilter: string | null): boolean 
     return true;
   }
 
-  return types.some(
-    (type) => type.toLowerCase() === typeFilter.toLowerCase(),
-  );
+  return types.some((type) => type.toLowerCase() === typeFilter.toLowerCase());
 }
 
-export function PokemonCard({
-  entry,
-  typeFilter,
-  onSelect,
-  animationDelay = 0,
-}: PokemonCardProps) {
+export function PokemonCard({ entry, typeFilter, onSelect, animationDelay = 0 }: PokemonCardProps) {
   const pokemonQuery = usePokemon(entry.pokemon_species.name);
 
   if (pokemonQuery.isLoading) {
@@ -86,7 +79,7 @@ export function PokemonCard({
           #{formatEntryNumber(item.entryNumber)}
         </span>
         <span
-          className="text-[0.625rem] font-medium uppercase tracking-wider text-ink-faint opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
+          className="text-[0.625rem] font-medium tracking-wider text-ink-faint uppercase opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100"
           aria-hidden="true"
         >
           View
@@ -106,7 +99,7 @@ export function PokemonCard({
         )}
       </div>
 
-      <span className="pokdex-display mt-3 line-clamp-1 text-center text-base font-semibold leading-tight text-ink dark:text-ink-dark">
+      <span className="pokdex-display mt-3 line-clamp-1 text-center text-base leading-tight font-semibold text-ink dark:text-ink-dark">
         {item.displayName}
       </span>
 

@@ -1,0 +1,32 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "react", "jsx-a11y", "import"],
+  "categories": {
+    "correctness": "error"
+  },
+  "options": {
+    "denyWarnings": true
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "ignorePatterns": ["build/**", ".react-router/**", "node_modules/**", "test-results/**"],
+  "settings": {
+    "react": {
+      "version": "19.0",
+      "linkComponents": [
+        { "name": "Link", "linkAttribute": "to" },
+        { "name": "NavLink", "linkAttribute": "to" }
+      ]
+    }
+  },
+  "overrides": [
+    {
+      "files": ["tests/**/*.ts", "playwright.config.ts"],
+      "env": {
+        "node": true
+      }
+    }
+  ]
+}

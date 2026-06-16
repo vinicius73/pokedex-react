@@ -6,9 +6,7 @@ export function usePokemon(pokemonNameOrId: string | number | null) {
   const pokeApiClient = usePokeApiClient();
 
   return useQuery({
-    queryKey: pokemonNameOrId
-      ? pokemonQueryKeys.pokemon(pokemonNameOrId)
-      : ["pokemon", "empty"],
+    queryKey: pokemonNameOrId ? pokemonQueryKeys.pokemon(pokemonNameOrId) : ["pokemon", "empty"],
     enabled: Boolean(pokemonNameOrId),
     queryFn: ({ signal }) => {
       if (!pokemonNameOrId) {

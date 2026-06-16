@@ -10,11 +10,7 @@ type PokemonGridProps = {
 const STAGGER_CAP_MS = 400;
 const STAGGER_STEP_MS = 18;
 
-export function PokemonGrid({
-  entries,
-  typeFilter,
-  onSelectPokemon,
-}: PokemonGridProps) {
+export function PokemonGrid({ entries, typeFilter, onSelectPokemon }: PokemonGridProps) {
   return (
     <section
       data-testid="pokemon-grid"

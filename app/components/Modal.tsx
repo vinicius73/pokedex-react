@@ -27,7 +27,7 @@ export function Modal({
   triggerRef,
   subtitle,
 }: ModalProps) {
-  const dialogRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -72,10 +72,12 @@ export function Modal({
 
     document.addEventListener("keydown", handleKeyDown);
 
+    const triggerElement = triggerRef?.current;
+
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
 
-      const returnTarget = triggerRef?.current ?? previouslyFocused;
+      const returnTarget = triggerElement ?? previouslyFocused;
 
       if (returnTarget && document.contains(returnTarget)) {
         returnTarget.focus();
@@ -88,22 +90,19 @@ export function Modal({
   }
 
   return createPortal(
-    <div
-      className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4"
-      onClick={onClose}
-    >
-      <div
+    <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4">
+      <button
+        type="button"
+        aria-label="Dismiss dialog"
         className="pokdex-backdrop-animate absolute inset-0 bg-ink/55 backdrop-blur-[3px] dark:bg-black/65"
-        aria-hidden="true"
+        onClick={onClose}
       />
 
-      <div
+      <dialog
         ref={dialogRef}
-        role="dialog"
-        aria-modal="true"
+        open
         aria-labelledby={titleId}
         className="pokdex-modal-panel pokdex-modal-animate max-h-[92vh] cursor-default sm:max-h-[90vh]"
-        onClick={(event) => event.stopPropagation()}
       >
         <div className="pokdex-modal-header flex items-start justify-between gap-4">
           <div className="min-w-0 pt-1">
@@ -114,7 +113,7 @@ export function Modal({
             ) : null}
             <h2
               id={titleId}
-              className="pokdex-display truncate text-2xl font-semibold leading-tight text-ink dark:text-ink-dark"
+              className="pokdex-display truncate text-2xl leading-tight font-semibold text-ink dark:text-ink-dark"
             >
               {title}
             </h2>
@@ -142,7 +141,7 @@ export function Modal({
         </div>
 
         <div className="overflow-y-auto px-6 py-5">{children}</div>
-      </div>
+      </dialog>
     </div>,
     document.body,
   );

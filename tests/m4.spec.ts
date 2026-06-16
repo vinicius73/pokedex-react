@@ -22,9 +22,7 @@ test("type filter restricts visible cards", async ({ page }) => {
 
   await page.getByLabel("Filter by type").selectOption("fire");
   await expect(page).toHaveURL(/type=fire/);
-  await expect
-    .poll(async () => cardCount(page), { timeout: 15_000 })
-    .toBeLessThan(totalCards);
+  await expect.poll(async () => cardCount(page), { timeout: 15_000 }).toBeLessThan(totalCards);
 });
 
 test("modal opens on card click and updates url", async ({ page }) => {
@@ -52,7 +50,10 @@ test("modal closes via close button, esc, and backdrop", async ({ page }) => {
 
   await page.goto("/regions/kanto?pokemon=bulbasaur");
   await expect(page.getByRole("dialog")).toBeVisible();
-  await page.locator(".fixed.inset-0").first().click({ position: { x: 5, y: 5 } });
+  await page
+    .locator(".fixed.inset-0")
+    .first()
+    .click({ position: { x: 5, y: 5 } });
   await expect(page.getByRole("dialog")).not.toBeVisible();
 });
 

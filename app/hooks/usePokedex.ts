@@ -6,9 +6,7 @@ export function usePokedex(pokedexName: string | null) {
   const pokeApiClient = usePokeApiClient();
 
   return useQuery({
-    queryKey: pokedexName
-      ? pokemonQueryKeys.pokedex(pokedexName)
-      : ["pokedex", "empty"],
+    queryKey: pokedexName ? pokemonQueryKeys.pokedex(pokedexName) : ["pokedex", "empty"],
     enabled: Boolean(pokedexName),
     queryFn: ({ signal }) => {
       if (!pokedexName) {

@@ -55,10 +55,7 @@ function filterEntriesByName(entries: PokedexEntry[], nameQuery: string) {
     const speciesName = entry.pokemon_species.name.toLowerCase();
     const displayName = formatPokemonName(entry.pokemon_species.name).toLowerCase();
 
-    return (
-      speciesName.includes(normalizedQuery) ||
-      displayName.includes(normalizedQuery)
-    );
+    return speciesName.includes(normalizedQuery) || displayName.includes(normalizedQuery);
   });
 }
 
@@ -75,16 +72,16 @@ export default function RegionPage() {
 
   const pokedexes = regionQuery.data?.pokedexes ?? [];
   const hasMultiplePokedexes = pokedexes.length > 1;
-  const pokedexNamesKey = pokedexes.map((pokedex) => pokedex.name).join(",");
+  const firstPokedexName = pokedexes[0]?.name;
 
   const [selectedPokedex, setSelectedPokedex] = useState<string | "all">("all");
   const previousRegionRef = useRef(regionName);
 
   useEffect(() => {
-    if (pokedexes.length >= 1) {
-      setSelectedPokedex(pokedexes[0].name);
+    if (firstPokedexName) {
+      setSelectedPokedex(firstPokedexName);
     }
-  }, [regionName, pokedexNamesKey]);
+  }, [regionName, firstPokedexName]);
 
   useEffect(() => {
     if (previousRegionRef.current === regionName) {
@@ -105,9 +102,7 @@ export default function RegionPage() {
     );
   }, [regionName, setSearchParams]);
 
-  const singlePokedexQuery = usePokedex(
-    selectedPokedex !== "all" ? selectedPokedex : null,
-  );
+  const singlePokedexQuery = usePokedex(selectedPokedex !== "all" ? selectedPokedex : null);
 
   const allPokedexQuery = useRegionPokedexes(
     selectedPokedex === "all" && hasMultiplePokedexes
@@ -210,9 +205,7 @@ export default function RegionPage() {
     }
 
     if (regionsQuery.isError) {
-      return (
-        <ErrorState message="Failed to load regions. Please try again later." />
-      );
+      return <ErrorState message="Failed to load regions. Please try again later." />;
     }
 
     if (regionQuery.isLoading) {
@@ -224,9 +217,7 @@ export default function RegionPage() {
     }
 
     if (regionQuery.isError) {
-      return (
-        <ErrorState message={`Failed to load the ${regionName} region.`} />
-      );
+      return <ErrorState message={`Failed to load the ${regionName} region.`} />;
     }
 
     if (pokedexes.length === 0) {
@@ -245,9 +236,7 @@ export default function RegionPage() {
       return (
         <ErrorState
           message={
-            pokedexError instanceof Error
-              ? pokedexError.message
-              : "Failed to load Pokédex entries."
+            pokedexError instanceof Error ? pokedexError.message : "Failed to load Pokédex entries."
           }
         />
       );
@@ -258,9 +247,7 @@ export default function RegionPage() {
     }
 
     if (filteredEntries.length === 0) {
-      return (
-        <EmptyState message="No Pokémon match your search." />
-      );
+      return <EmptyState message="No Pokémon match your search." />;
     }
 
     return (
@@ -274,22 +261,22 @@ export default function RegionPage() {
 
   return (
     <>
-      <main data-testid="pokedex-page" className="relative z-[1] mx-auto max-w-7xl px-4 py-8 sm:py-10">
+      <main
+        data-testid="pokedex-page"
+        className="relative z-[1] mx-auto max-w-7xl px-4 py-8 sm:py-10"
+      >
         <header className="mb-8 space-y-6 sm:mb-10">
           <div className="space-y-2">
-            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-crimson">
+            <p className="text-xs font-semibold tracking-[0.18em] text-crimson uppercase">
               Regional encyclopedia
             </p>
-            <h1 className="pokdex-display text-4xl font-semibold tracking-tight text-ink dark:text-ink-dark sm:text-5xl">
+            <h1 className="pokdex-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl dark:text-ink-dark">
               Pokédex
             </h1>
           </div>
 
           {regionsQuery.data ? (
-            <RegionTabs
-              regions={regionsQuery.data.results}
-              activeRegion={regionName}
-            />
+            <RegionTabs regions={regionsQuery.data.results} activeRegion={regionName} />
           ) : null}
 
           {pokedexes.length > 0 ? (
@@ -300,7 +287,7 @@ export default function RegionPage() {
             />
           ) : null}
 
-          <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface-raised/80 p-4 shadow-sm backdrop-blur-sm dark:border-border-dark dark:bg-surface-raised-dark/80 sm:flex-row sm:items-center">
+          <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface-raised/80 p-4 shadow-sm backdrop-blur-sm sm:flex-row sm:items-center dark:border-border-dark dark:bg-surface-raised-dark/80">
             <div className="flex-1">
               <label htmlFor="pokemon-search" className="sr-only">
                 Search Pokémon
@@ -308,7 +295,6 @@ export default function RegionPage() {
               <input
                 id="pokemon-search"
                 type="search"
-                role="searchbox"
                 aria-label="Search Pokémon"
                 placeholder="Search by name…"
                 value={nameQuery}

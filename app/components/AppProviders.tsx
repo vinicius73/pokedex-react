@@ -26,9 +26,7 @@ export function AppProviders({ children }: PropsWithChildren) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <PokeApiClientProvider client={pokeApiClient}>
-        {children}
-      </PokeApiClientProvider>
+      <PokeApiClientProvider client={pokeApiClient}>{children}</PokeApiClientProvider>
     </QueryClientProvider>
   );
 }
