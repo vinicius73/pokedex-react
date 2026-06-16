@@ -72,16 +72,16 @@ export default function RegionPage() {
 
   const pokedexes = regionQuery.data?.pokedexes ?? [];
   const hasMultiplePokedexes = pokedexes.length > 1;
-  const pokedexNamesKey = pokedexes.map((pokedex) => pokedex.name).join(",");
+  const firstPokedexName = pokedexes[0]?.name;
 
   const [selectedPokedex, setSelectedPokedex] = useState<string | "all">("all");
   const previousRegionRef = useRef(regionName);
 
   useEffect(() => {
-    if (pokedexes.length >= 1) {
-      setSelectedPokedex(pokedexes[0].name);
+    if (firstPokedexName) {
+      setSelectedPokedex(firstPokedexName);
     }
-  }, [regionName, pokedexNamesKey]);
+  }, [regionName, firstPokedexName]);
 
   useEffect(() => {
     if (previousRegionRef.current === regionName) {
@@ -295,7 +295,6 @@ export default function RegionPage() {
               <input
                 id="pokemon-search"
                 type="search"
-                role="searchbox"
                 aria-label="Search Pokémon"
                 placeholder="Search by name…"
                 value={nameQuery}

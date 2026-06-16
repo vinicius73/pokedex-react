@@ -15,16 +15,15 @@ export function StatBar({ displayName, value }: StatBarProps) {
         {displayName}
       </span>
 
-      <div
-        role="meter"
-        aria-valuenow={value}
-        aria-valuemin={0}
-        aria-valuemax={MAX_STAT}
+      <meter
+        value={value}
+        min={0}
+        max={MAX_STAT}
         aria-label={displayName}
         className="pokdex-stat-track"
       >
         <div className="pokdex-stat-fill" style={{ width: `${percentage}%` }} />
-      </div>
+      </meter>
 
       <span className="pokdex-mono text-right text-sm font-semibold text-ink tabular-nums dark:text-ink-dark">
         {value}

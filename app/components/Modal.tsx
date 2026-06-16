@@ -72,10 +72,12 @@ export function Modal({
 
     document.addEventListener("keydown", handleKeyDown);
 
+    const triggerElement = triggerRef?.current;
+
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
 
-      const returnTarget = triggerRef?.current ?? previouslyFocused;
+      const returnTarget = triggerElement ?? previouslyFocused;
 
       if (returnTarget && document.contains(returnTarget)) {
         returnTarget.focus();
