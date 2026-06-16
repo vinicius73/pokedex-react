@@ -6,9 +6,7 @@ export function usePokemonDetails(pokemonName: string | null) {
   const pokeApiClient = usePokeApiClient();
 
   const pokemonQuery = useQuery({
-    queryKey: pokemonName
-      ? pokemonQueryKeys.pokemon(pokemonName)
-      : ["pokemon", "empty"],
+    queryKey: pokemonName ? pokemonQueryKeys.pokemon(pokemonName) : ["pokemon", "empty"],
     enabled: Boolean(pokemonName),
     queryFn: ({ signal }) => {
       if (!pokemonName) {
@@ -55,13 +53,7 @@ export function usePokemonDetails(pokemonName: string | null) {
     pokemonQuery,
     speciesQuery,
     evolutionChainQuery,
-    isLoading:
-      pokemonQuery.isLoading ||
-      speciesQuery.isLoading ||
-      evolutionChainQuery.isLoading,
-    isError:
-      pokemonQuery.isError ||
-      speciesQuery.isError ||
-      evolutionChainQuery.isError,
+    isLoading: pokemonQuery.isLoading || speciesQuery.isLoading || evolutionChainQuery.isLoading,
+    isError: pokemonQuery.isError || speciesQuery.isError || evolutionChainQuery.isError,
   };
 }

@@ -23,13 +23,10 @@ export function StatBar({ displayName, value }: StatBarProps) {
         aria-label={displayName}
         className="pokdex-stat-track"
       >
-        <div
-          className="pokdex-stat-fill"
-          style={{ width: `${percentage}%` }}
-        />
+        <div className="pokdex-stat-fill" style={{ width: `${percentage}%` }} />
       </div>
 
-      <span className="pokdex-mono text-right text-sm font-semibold tabular-nums text-ink dark:text-ink-dark">
+      <span className="pokdex-mono text-right text-sm font-semibold text-ink tabular-nums dark:text-ink-dark">
         {value}
       </span>
     </div>

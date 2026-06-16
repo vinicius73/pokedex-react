@@ -6,9 +6,7 @@ export type PokedexEntry = {
   };
 };
 
-export function mergePokedexEntries(
-  entriesGroups: PokedexEntry[][],
-): PokedexEntry[] {
+export function mergePokedexEntries(entriesGroups: PokedexEntry[][]): PokedexEntry[] {
   const seen = new Set<string>();
   const result: PokedexEntry[] = [];
 

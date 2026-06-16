@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans:
+    "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
   --font-display: "Fraunces", Georgia, "Times New Roman", serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
 
@@ -70,7 +71,7 @@ body::before {
   }
 
   .pokdex-section-title {
-    @apply mb-3 text-[0.6875rem] font-semibold uppercase tracking-[0.14em] text-ink-faint;
+    @apply mb-3 text-[0.6875rem] font-semibold tracking-[0.14em] text-ink-faint uppercase;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -80,7 +81,7 @@ body::before {
   }
 
   .pokdex-field {
-    @apply w-full rounded-lg border border-border bg-surface-raised px-4 py-2.5 text-sm text-ink shadow-sm transition-[border-color,box-shadow] placeholder:text-ink-faint focus-visible:border-crimson focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson/20;
+    @apply w-full rounded-lg border border-border bg-surface-raised px-4 py-2.5 text-sm text-ink shadow-sm transition-[border-color,box-shadow] placeholder:text-ink-faint focus-visible:border-crimson focus-visible:ring-2 focus-visible:ring-crimson/20 focus-visible:outline-none;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -115,7 +116,7 @@ body::before {
   }
 
   .pokdex-card:not(:disabled):focus-visible {
-    @apply outline-none ring-2 ring-crimson ring-offset-2 ring-offset-parchment;
+    @apply ring-2 ring-crimson ring-offset-2 ring-offset-parchment outline-none;
   }
 
   .pokdex-card:not(:disabled):active {
@@ -162,11 +163,11 @@ body::before {
   }
 
   .pokdex-modal-close {
-    @apply shrink-0 cursor-pointer rounded-lg border border-border bg-surface p-2 text-ink-muted transition-colors hover:border-border-strong hover:bg-parchment hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-parchment dark:border-border-dark dark:bg-surface-dark dark:text-ink-muted-dark dark:hover:bg-parchment-deep-dark dark:hover:text-ink-dark dark:focus-visible:ring-offset-parchment-dark;
+    @apply shrink-0 cursor-pointer rounded-lg border border-border bg-surface p-2 text-ink-muted transition-colors hover:border-border-strong hover:bg-parchment hover:text-ink focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-parchment focus-visible:outline-none dark:border-border-dark dark:bg-surface-dark dark:text-ink-muted-dark dark:hover:bg-parchment-deep-dark dark:hover:text-ink-dark dark:focus-visible:ring-offset-parchment-dark;
   }
 
   .pokdex-evolution-step {
-    @apply flex min-w-[5.5rem] flex-col items-center rounded-xl border border-border bg-surface-raised p-2.5 transition-[border-color,background-color,transform] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-surface-raised dark:border-border-dark dark:bg-surface-dark dark:focus-visible:ring-offset-surface-raised-dark;
+    @apply flex min-w-[5.5rem] flex-col items-center rounded-xl border border-border bg-surface-raised p-2.5 transition-[border-color,background-color,transform] focus-visible:ring-2 focus-visible:ring-crimson focus-visible:ring-offset-2 focus-visible:ring-offset-surface-raised focus-visible:outline-none dark:border-border-dark dark:bg-surface-dark dark:focus-visible:ring-offset-surface-raised-dark;
   }
 
   .pokdex-evolution-step:not(:disabled) {

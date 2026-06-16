@@ -114,7 +114,7 @@ export function Modal({
             ) : null}
             <h2
               id={titleId}
-              className="pokdex-display truncate text-2xl font-semibold leading-tight text-ink dark:text-ink-dark"
+              className="pokdex-display truncate text-2xl leading-tight font-semibold text-ink dark:text-ink-dark"
             >
               {title}
             </h2>

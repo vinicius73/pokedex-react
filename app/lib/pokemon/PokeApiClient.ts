@@ -19,23 +19,14 @@ export interface PokeApiClient {
 
   getPokedex(pokedexName: string, options?: RequestOptions): Promise<Pokedex>;
 
-  getPokemon(
-    pokemonNameOrId: string | number,
-    options?: RequestOptions,
-  ): Promise<Pokemon>;
+  getPokemon(pokemonNameOrId: string | number, options?: RequestOptions): Promise<Pokemon>;
 
   getPokemonSpecies(
     speciesNameOrId: string | number,
     options?: RequestOptions,
   ): Promise<PokemonSpecies>;
 
-  getEvolutionChainByUrl(
-    url: string,
-    options?: RequestOptions,
-  ): Promise<EvolutionChain>;
+  getEvolutionChainByUrl(url: string, options?: RequestOptions): Promise<EvolutionChain>;
 
-  getType(
-    typeName: string,
-    options?: RequestOptions,
-  ): Promise<PokemonTypeDetails>;
+  getType(typeName: string, options?: RequestOptions): Promise<PokemonTypeDetails>;
 }

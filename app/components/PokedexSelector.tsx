@@ -7,11 +7,7 @@ type PokedexSelectorProps = {
   onChange: (name: string | "all") => void;
 };
 
-export function PokedexSelector({
-  pokedexes,
-  selected,
-  onChange,
-}: PokedexSelectorProps) {
+export function PokedexSelector({ pokedexes, selected, onChange }: PokedexSelectorProps) {
   if (pokedexes.length <= 1) {
     return null;
   }

@@ -36,16 +36,10 @@ export function createPokeApiClient(httpClient: HttpClient): PokeApiClient {
       });
     },
 
-    getPokemonSpecies(
-      speciesNameOrId: string | number,
-      options?: RequestOptions,
-    ) {
-      return httpClient.get<PokemonSpecies>(
-        `pokemon-species/${speciesNameOrId}`,
-        {
-          signal: options?.signal,
-        },
-      );
+    getPokemonSpecies(speciesNameOrId: string | number, options?: RequestOptions) {
+      return httpClient.get<PokemonSpecies>(`pokemon-species/${speciesNameOrId}`, {
+        signal: options?.signal,
+      });
     },
 
     getEvolutionChainByUrl(url: string, options?: RequestOptions) {

@@ -2,15 +2,14 @@
   "name": "pokedex-ai",
   "private": true,
   "type": "module",
-  "engines": {
-    "node": ">=24.0.0"
-  },
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
     "start": "vite preview --config vite.preview.config.ts --host 0.0.0.0 --port 3000",
     "typecheck": "react-router typegen && tsc",
-    "test": "playwright test"
+    "test": "playwright test",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
   "dependencies": {
     "@react-router/node": "7.15.1",
@@ -24,12 +23,16 @@
   "devDependencies": {
     "@playwright/test": "^1.60.0",
     "@react-router/dev": "7.15.1",
-    "vite": "^8.0.3",
     "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^24",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "oxfmt": "^0.55.0",
     "tailwindcss": "^4.2.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vite": "^8.0.3"
+  },
+  "engines": {
+    "node": ">=24.0.0"
   }
 }

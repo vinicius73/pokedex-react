@@ -33,10 +33,7 @@ export function createKyHttpClient({
 class KyHttpClient implements HttpClient {
   constructor(private readonly client: KyInstance) {}
 
-  async get<TResponse>(
-    pathOrUrl: string,
-    options?: HttpRequestOptions,
-  ): Promise<TResponse> {
+  async get<TResponse>(pathOrUrl: string, options?: HttpRequestOptions): Promise<TResponse> {
     return this.client
       .get(pathOrUrl, {
         searchParams: options?.searchParams,
