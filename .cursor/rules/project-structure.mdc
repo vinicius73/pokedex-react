@@ -11,6 +11,10 @@ alwaysApply: true
 - **TypeScript 5.9** (`strict`, `verbatimModuleSyntax`)
 - **Tailwind CSS v4**
 - **Vite 8**
+- **TanStack Query** for server state
+- **Ky** for HTTP (via `HttpClient` abstraction — never call `fetch` directly for PokeAPI)
+- **Playwright** for E2E tests
+- **Oxfmt** for formatting, **Oxlint** for linting (Oxc toolchain)
 
 ## Folder Layout
 
@@ -18,13 +22,16 @@ alwaysApply: true
 app/
   routes/          # One file per route segment
   components/      # Shared UI components (no route logic)
-  hooks/           # Custom React hooks
+  hooks/           # Custom React hooks (TanStack Query wrappers)
   lib/             # Pure utilities and helpers (no React)
+    http/          # HttpClient abstraction + Ky implementation
+    pokemon/       # PokeAPI client, mappers, query keys, utils
   types/           # Shared TypeScript types / interfaces
   root.tsx         # Root layout + global ErrorBoundary
   routes.ts        # Route manifest
-  app.css          # Global styles
+  app.css          # Global styles (Tailwind entry)
 public/            # Static assets (favicon, images)
+tests/             # Playwright E2E specs
 ```
 
 - Co-locate component-specific files (styles, tests, sub-components) next to the component.
@@ -70,6 +77,21 @@ useEffect(() => setFullName(`${first} ${last}`), [first, last]);
 const fullName = `${first} ${last}`;
 ```
 
+## Data Fetching
+
+- PokeAPI access goes through `PokeApiClient` (injected via `PokeApiClientContext`).
+- Query keys live in `app/lib/pokemon/pokemonQueryKeys.ts`.
+- Route components consume data via hooks in `app/hooks/` (`useRegions`, `usePokedex`, etc.).
+- Validate external API responses at the boundary before mapping to view models.
+
+## Accessibility
+
+- Prefer native semantic elements over ARIA roles (`<dialog>`, `<meter>`, `<output>`).
+- Loading indicators use `<output aria-live="polite">` (see `Spinner`).
+- Modals use `<dialog open>` with a backdrop `<button>` for dismiss — do not put `onClick` on static `div`s.
+- Backdrop dismiss button uses `aria-label="Dismiss dialog"`; the close icon button uses `"Close dialog"`.
+- Do not disable jsx-a11y rules — fix the markup instead.
+
 ## TypeScript
 
 - `strict: true` is enforced — no suppressions without a documented reason.
@@ -87,6 +109,38 @@ function parsePokemon(raw: unknown): Pokemon {
   // validate shape here
 }
 ```
+
+## Code Quality
+
+Single config file per tool — no overrides that disable rules.
+
+| Tool | Config | Scripts |
+|---|---|---|
+| Oxfmt | `.oxfmtrc.json` | `npm run fmt`, `npm run fmt:check` |
+| Oxlint | `.oxlintrc.json` | `npm run lint`, `npm run lint:fix` |
+
+Oxlint defaults:
+- Plugins: `typescript`, `unicorn`, `oxc`, `react`, `jsx-a11y`, `import`
+- Category `correctness` at `error`
+- `options.denyWarnings: true` — warnings fail CI
+- React settings include `Link` / `NavLink` from React Router
+
+Oxfmt defaults:
+- Tailwind class sorting via `sortTailwindcss.stylesheet` → `./app/app.css`
+- Shared `ignorePatterns` with Oxlint (`build/`, `.react-router/`, `node_modules/`, `test-results/`)
+
+Run before committing:
+
+```bash
+npm run fmt:check && npm run lint && npm run typecheck && npm run test
+```
+
+## Testing
+
+- E2E tests live in `tests/` and run against the real PokeAPI via `npm run dev`.
+- Playwright config: `playwright.config.ts` (base URL `http://localhost:5173`).
+- Prefer `getByRole` and `data-testid` selectors; keep the suite small and stable.
+- CI runs E2E in a separate job with Chromium only.
 
 ## General
 
