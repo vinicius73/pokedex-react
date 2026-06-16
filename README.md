@@ -25,17 +25,17 @@ The app runs at [http://localhost:5173](http://localhost:5173) and redirects to 
 
 ## Scripts
 
-| Script | Description |
-|---|---|
-| `npm run dev` | Start dev server with HMR |
-| `npm run build` | Production build |
-| `npm run start` | Preview production build on port 3000 |
-| `npm run typecheck` | React Router typegen + `tsc` |
-| `npm run fmt` | Format code with Oxfmt |
-| `npm run fmt:check` | Check formatting (CI) |
-| `npm run lint` | Lint with Oxlint |
-| `npm run lint:fix` | Lint and apply safe fixes |
-| `npm run test` | Run Playwright E2E tests |
+| Script              | Description                           |
+| ------------------- | ------------------------------------- |
+| `npm run dev`       | Start dev server with HMR             |
+| `npm run build`     | Production build                      |
+| `npm run start`     | Preview production build on port 3000 |
+| `npm run typecheck` | React Router typegen + `tsc`          |
+| `npm run fmt`       | Format code with Oxfmt                |
+| `npm run fmt:check` | Check formatting (CI)                 |
+| `npm run lint`      | Lint with Oxlint                      |
+| `npm run lint:fix`  | Lint and apply safe fixes             |
+| `npm run test`      | Run Playwright E2E tests              |
 
 ## Code Quality
 
