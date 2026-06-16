@@ -29,5 +29,5 @@ test("region tabs update url and grid", async ({ page }) => {
   await page.getByRole("link", { name: "Johto" }).click();
   await expect(page).toHaveURL(/\/regions\/johto/);
   await waitForGrid(page);
-  expect(await cardCount(page)).toBeGreaterThan(0);
+  await expect.poll(async () => cardCount(page), { timeout: 15_000 }).toBeGreaterThan(0);
 });

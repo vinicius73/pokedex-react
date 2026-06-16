@@ -74,14 +74,16 @@ export default function RegionPage() {
   const hasMultiplePokedexes = pokedexes.length > 1;
   const firstPokedexName = pokedexes[0]?.name;
 
-  const [selectedPokedex, setSelectedPokedex] = useState<string | "all">("all");
+  const [userPokedexSelection, setUserPokedexSelection] = useState<string | "all" | null>(null);
+  const [pokedexSelectionRegion, setPokedexSelectionRegion] = useState(regionName);
   const previousRegionRef = useRef(regionName);
 
-  useEffect(() => {
-    if (firstPokedexName) {
-      setSelectedPokedex(firstPokedexName);
-    }
-  }, [regionName, firstPokedexName]);
+  if (pokedexSelectionRegion !== regionName) {
+    setPokedexSelectionRegion(regionName);
+    setUserPokedexSelection(null);
+  }
+
+  const selectedPokedex = userPokedexSelection ?? firstPokedexName ?? "all";
 
   useEffect(() => {
     if (previousRegionRef.current === regionName) {
@@ -283,7 +285,7 @@ export default function RegionPage() {
             <PokedexSelector
               pokedexes={pokedexes}
               selected={selectedPokedex}
-              onChange={setSelectedPokedex}
+              onChange={setUserPokedexSelection}
             />
           ) : null}
 
