@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode, type RefObject } from "react";
+import { useLayoutEffect, useRef, type ReactNode, type RefObject } from "react";
 import { createPortal } from "react-dom";
 
 type ModalProps = {
@@ -29,20 +29,25 @@ export function Modal({
 }: ModalProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const onCloseRef = useRef(onClose);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
+  const wasOpenRef = useRef(false);
 
-  useEffect(() => {
+  onCloseRef.current = onClose;
+
+  useLayoutEffect(() => {
     if (!isOpen) {
       return;
     }
 
-    const previouslyFocused = document.activeElement as HTMLElement | null;
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
 
     closeButtonRef.current?.focus();
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         event.preventDefault();
-        onClose();
+        onCloseRef.current();
         return;
       }
 
@@ -70,20 +75,31 @@ export function Modal({
       }
     }
 
-    document.addEventListener("keydown", handleKeyDown);
-
-    const triggerElement = triggerRef?.current;
+    document.addEventListener("keydown", handleKeyDown, { capture: true });
 
     return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-
-      const returnTarget = triggerElement ?? previouslyFocused;
-
-      if (returnTarget && document.contains(returnTarget)) {
-        returnTarget.focus();
-      }
+      document.removeEventListener("keydown", handleKeyDown, { capture: true });
     };
-  }, [isOpen, onClose, triggerRef]);
+  }, [isOpen]);
+
+  useLayoutEffect(() => {
+    if (isOpen) {
+      wasOpenRef.current = true;
+      return;
+    }
+
+    if (!wasOpenRef.current) {
+      return;
+    }
+
+    wasOpenRef.current = false;
+
+    const returnTarget = triggerRef?.current ?? previouslyFocusedRef.current;
+
+    if (returnTarget && document.contains(returnTarget)) {
+      returnTarget.focus();
+    }
+  }, [isOpen, triggerRef]);
 
   if (!isOpen) {
     return null;
@@ -103,6 +119,10 @@ export function Modal({
         open
         aria-labelledby={titleId}
         className="pokdex-modal-panel pokdex-modal-animate max-h-[92vh] cursor-default sm:max-h-[90vh]"
+        onCancel={(event) => {
+          event.preventDefault();
+          onCloseRef.current();
+        }}
       >
         <div className="pokdex-modal-header flex items-start justify-between gap-4">
           <div className="min-w-0 pt-1">
